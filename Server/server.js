@@ -15,9 +15,9 @@ app.use(session({
     saveUninitialized:true
 }));
 
-const v1Router = require("./src/v1/routes/routes");
+const userRoutes = require("./src/v1/routes/userRoutes");
 
-app.use("/api/v1/", v1Router);
+app.use("/api/v1/user/", userRoutes);
 
   
 app.listen(8000, () => {
