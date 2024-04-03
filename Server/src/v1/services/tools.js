@@ -8,16 +8,6 @@ const testDatabase = async (sequelize) => {
     }
 }
 
-const syncDatabase = async (sequelize) => {
-    try {
-        await sequelize.sync();
-        console.log('Database synchronized successfully.');
-    } catch (error) {
-        console.error('Unable to synchronize the database:', error);
-    }
-}
-
 module.exports = {
     testDatabase,
-    syncDatabase
 }
