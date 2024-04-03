@@ -16,8 +16,10 @@ app.use(session({
 }));
 
 const userRoutes = require("./src/v1/routes/userRoutes");
+const reservationRoutes = require("./src/v1/routes/userRoutes");
 
 app.use("/api/v1/user/", userRoutes);
+app.reservation("/api/v1/resevation/", reservationRoutes);
 
   
 app.listen(8000, () => {
