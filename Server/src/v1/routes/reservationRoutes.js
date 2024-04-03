@@ -4,11 +4,11 @@ const reservationController = require("../controllers/reservationController")
 
 const reservationRouter = express.Router();
 
-restaurantRouter.post("/" , reservationController.createReservation);
-restaurantRouter.get("/" , reservationController.getAllReservations);
-restaurantRouter.get("/:id" , reservationController.getReservationById);
-restaurantRouter.put("/:id" , reservationController.updateReservation);
-restaurantRouter.delete("/:id" , reservationController.deleteReservation);
+reservationRouter.post("/" , reservationController.createReservation);
+reservationRouter.get("/" , reservationController.getAllReservations);
+reservationRouter.get("/:id" , reservationController.getReservationById);
+reservationRouter.put("/:id" , reservationController.updateReservation);
+reservationRouter.delete("/:id" , reservationController.deleteReservation);
 
 module.exports = reservationRouter;
 // // Route to create a new reservation

@@ -17,9 +17,12 @@ app.use(session({
 
 const userRoutes = require("./src/v1/routes/userRoutes");
 const restaurantRoutes = require("./src/v1/routes/restaurantRoutes");
+const reservationRoutes = require("./src/v1/routes/reservationRoutes");
 
 app.use("/api/v1/user/", userRoutes);
 app.use("/api/v1/restaurant/", restaurantRoutes);
+app.use("/api/v1/reservation/", reservationRoutes);
+
   
 app.listen(8000, () => {
     console.log(`Server is running on port 8000.`);
