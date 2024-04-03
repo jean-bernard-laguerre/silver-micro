@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
-    'testbase', 'root', '', {
+    'silver-micro', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
 });

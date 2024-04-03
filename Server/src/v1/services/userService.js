@@ -1,4 +1,4 @@
-const UserModel = require("../v1/models/userModel")
+const UserModel = require("../models/userModel")
 const auth = require("./auth")
 const hash = require('hash.js')
 
