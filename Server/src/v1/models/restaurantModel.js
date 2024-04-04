@@ -1,7 +1,9 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const db = require('../../database');
 
-const Restaurant = db.sequelize.define('Restaurant', {
+class Restaurant extends Model { }
+
+Restaurant.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -24,7 +26,10 @@ const Restaurant = db.sequelize.define('Restaurant', {
         type: DataTypes.STRING,
         allowNull: true
     },
-});
+}, {
+    sequelize: db.sequelize,
+    modelName: 'Restaurant',
+})
 
 Restaurant.sync({ force: false })
 

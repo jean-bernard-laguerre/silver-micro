@@ -1,7 +1,13 @@
-const UserModel = require("../models/userModel")
+const User = require("../models/userModel")
+const config = require("../../config")
 const auth = require("./auth")
-const hash = require('hash.js')
+const hash = require('hash.js');
 
+/**
+ * Register a new user
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+*/
 const register = (req, res) => {
     
     let email = req.body.email;
@@ -10,14 +16,18 @@ const register = (req, res) => {
     let password = req.body.password;
     password = hash.sha256().update(password).digest('hex');
 
-    if (!(email && username && password)) {return false};
+    if (!(email && username && password)) {
+        res.json({  message: "Register failed - Invalid input",
+                    success: false });
+        return false;
+    };
 
-    UserModel.findOne({ where: { email: email } }).then(user => {
+    User.findOne({ where: { email: email } }).then(user => {
         if (user) {
             res.json({  message: "Register failed - User already exist",
                         success: false });
         } else {
-            UserModel.create({
+            User.create({
                 username: username,
                 password: password,
                 email: email
@@ -29,15 +39,24 @@ const register = (req, res) => {
     });
 }
 
+/**
+ * Authenticate a user
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+*/
 const authentication = (req, res) => {
 
     let email = req.body.email;
     let password = req.body.password;
     password = hash.sha256().update(password).digest('hex');
 
-    if (!(email && password)) { return false };
+    if (!(email && password)) { 
+        res.json({  message: "Login Failed - Invalid input",
+                    success: false });
+        return false;
+    };
 
-    UserModel.findOne({ where: { email: email } }).then(user => {
+    User.findOne({ where: { email: email } }).then(user => {
         if (!user) {
             res.json({  message: "Login Failed - User Not Found",
                         success: false });
@@ -52,6 +71,7 @@ const authentication = (req, res) => {
             res.json({  message: "Logged in Successfully",
                         success: true,
                         id: user.id,
+                        role: user.role,
                         username: user.username,
                         token: auth.generateToken(user)
                     });
@@ -60,4 +80,43 @@ const authentication = (req, res) => {
     });
 }
 
-module.exports = { register, authentication }
+const getUser = (req, res) => {
+    User.findByPk(req.params.id).then(user => {
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.json({ user });
+    });
+}
+
+const getUsers = (req, res) => {
+    User.findAll().then(users => {
+        res.json({ users });
+    });
+}
+
+const updateUser = (req, res) => {
+    User.findByPk(req.params.id).then(user => {
+        user.update({
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+        }).then(user => {
+            res.json({ user });
+        });
+    });
+}
+
+const deleteUser = (req, res) => {
+    User.findByPk(req.params.id).then(user => {
+        user.destroy();
+        res.json({ message: "User deleted" });
+    });
+}
+
+module.exports = { 
+    register, 
+    authentication,
+    getUser,
+    getUsers
+}
