@@ -17,14 +17,18 @@ app.use(session({
 
 const userRoutes = require("./src/v1/routes/userRoutes");
 const restaurantRoutes = require("./src/v1/routes/restaurantRoutes");
-const reservationRoutes = require("./src/v1/routes/reservationRoutes");
 const responsableRoutes = require("./src/v1/routes/responsableRoutes");
+const reservationRoutes = require("./src/v1/routes/reservationRoutes");
+const avisRoutes = require("./src/v1/routes/avisRoutes");
+
 
 app.use("/api/v1/user/", userRoutes);
 app.use("/api/v1/restaurant/", restaurantRoutes);
-app.use("/api/v1/reservation/", reservationRoutes);
 app.use("/api/v1/responsable/", responsableRoutes);
-  
+app.use("/api/v1/reservation/", reservationRoutes);
+app.use("/api/v1/avis/", avisRoutes);
+
+
 app.listen(8000, () => {
     console.log(`Server is running on port 8000.`);
 });
