@@ -1,6 +1,4 @@
-# Node.js Starter Project with JWT Authentication
-
-This project is a starter codebase for building a Node.js application with a login module using JSON Web Tokens (JWT) and middleware.
+# Silver Micro
 
 ## Getting Started
 

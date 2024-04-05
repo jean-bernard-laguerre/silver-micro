@@ -1,7 +1,9 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const db = require('../../database');
 
-const Restaurant = db.sequelize.define('Restaurant', {
+class Restaurant extends Model { }
+
+Restaurant.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -22,9 +24,28 @@ const Restaurant = db.sequelize.define('Restaurant', {
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        validate: {
+            isEmail: {
+                args: true,
+                msg: "Email must be a valid email"
+            }
+        }
     },
-});
+    capacity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            min: {
+                args: 1,
+                msg: "Capacity must be at least 1"
+            }
+        }
+    },
+}, {
+    sequelize: db.sequelize,
+    modelName: 'Restaurant',
+})
 
 Restaurant.sync({ force: false })
 

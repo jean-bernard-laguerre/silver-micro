@@ -1,13 +1,16 @@
 const express = require("express");
-const authMiddleware = require("../../middlewares/middleware");
+const config = require("../../config");
 const restaurantController = require("../controllers/restaurantController")
+
+const authMiddleware = require("../../middlewares/authMiddleware");
+const adminMiddleware = require("../../middlewares/adminMiddleware");
 
 const restaurantRouter = express.Router();
 
 restaurantRouter.get("/" , restaurantController.getRestaurants);
-restaurantRouter.get("/:id" , restaurantController.getRestaurant);
-restaurantRouter.post("/" , restaurantController.createRestaurant);
-restaurantRouter.put("/:id" , restaurantController.updateRestaurant);
-restaurantRouter.delete("/:id" , restaurantController.deleteRestaurant);
+restaurantRouter.get("/:restaurantId" , restaurantController.getRestaurant);
+restaurantRouter.post("/" , authMiddleware(), restaurantController.createRestaurant);
+restaurantRouter.put("/:restaurantId" , authMiddleware(), adminMiddleware(config.adminRole.patron), restaurantController.updateRestaurant);
+restaurantRouter.delete("/:restaurantId" , authMiddleware(), adminMiddleware(config.adminRole.patron), restaurantController.deleteRestaurant);
 
 module.exports = restaurantRouter;
