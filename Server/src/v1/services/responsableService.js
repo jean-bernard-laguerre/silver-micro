@@ -45,7 +45,7 @@ const getResponsablesByRestaurant = (req, res) => {
  * @param {Object} res - response object
  */
 const createResponsable = (req, res) => {
-    User.findByPk(req.body.userId).then(user => {
+    User.findByPk(req.params.userId).then(user => {
         if (user) {
             user.update({
                 role: role.admin
@@ -54,16 +54,22 @@ const createResponsable = (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
     });
-    Responsable.findOne({ where: { UserId: req.body.userId, RestaurantId: req.body.restaurantId } }).then(responsable => {
+    Responsable.findOne({ where: { UserId: req.params.userId, RestaurantId: req.params.restaurantId } }).then(responsable => {
         if (responsable) {
             return res.status(404).json({ error: "Responsable already exist" });
         } else {
-            Responsable.create({
-                UserId: req.body.userId,
-                RestaurantId: req.body.restaurantId,
+            const item = {
+                UserId: req.params.userId,
+                RestaurantId: req.params.restaurantId,
                 role: req.body.role
-            }).then(responsable => {
-                res.json({ responsable });
+            };
+
+            Responsable.build(item).validate().then(() => {
+                Responsable.create(item).then(responsable => {
+                    res.json({ responsable });
+                });
+            }).catch(error => {
+                res.status(400).json({ error: error.errors[0].message });
             });
         }
     });
@@ -75,11 +81,21 @@ const createResponsable = (req, res) => {
  * @param {Object} res - response object
  */
 const updateResponsable = (req, res) => {
-    Responsable.findOne({ where: { UserId: req.body.userId, RestaurantId: req.body.restaurantId } }).then(responsable => {
-        responsable.update({
-            role: req.body.role
-        }).then(responsable => {
-            res.json({ responsable });
+    const item = {
+        UserId: req.params.userId,
+        RestaurantId: req.params.restaurantId,
+        role: req.body.role
+    };
+
+    Responsable.findOne({ where: { UserId: req.params.userId, RestaurantId: req.params.restaurantId } }).then(responsable => {
+        if (!responsable) {
+            return res.status(404).json({ error: "Responsable not found" });
+        }
+
+        responsable.update(item, { fields: Object.keys(item) }).then(updatedResponsable => {
+            res.json({ responsable: updatedResponsable });
+        }).catch(error => {
+            res.status(400).json({ error: error.errors[0].message });
         });
     });
 }
@@ -90,7 +106,10 @@ const updateResponsable = (req, res) => {
  * @param {Object} res - response object
  */
 const deleteResponsable = (req, res) => {
-    Responsable.findOne({ where: { userId: req.body.userId, restaurantId: req.body.restaurantId } }).then(responsable => {
+    Responsable.findOne({ where: { userId: req.params.userId, restaurantId: req.params.restaurantId } }).then(responsable => {
+        if (!responsable) {
+            return res.status(404).json({ error: "Responsable not found" });
+        }
         responsable.destroy().then(() => {
             res.json({ message: "Responsable deleted" });
         });

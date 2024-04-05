@@ -13,14 +13,13 @@ const adminMiddleware = (allowedRole = "any") => {
         }
 
         // check the user role in the restaurant of the request
-        const responsable = await Responsable.findOne({ where: { UserId: user.id, RestaurantId: req.body.restaurantId } });
+        const responsable = await Responsable.findOne({ where: { UserId: user.id, RestaurantId: req.params.restaurantId } });
 
         // if the user has no role in the restaurant, return 403
         if (!responsable) {
             return res.status(403).json({ message: 'Restaurant access forbidden' });
         }
 
-        console.log(responsable);
         // if allowedRole is not any, check if the user role is allowed
         if (allowedRole !== "any" && responsable.role !== allowedRole) {
             return res.status(403).json({ message: 'Unauthorized role' });

@@ -24,7 +24,23 @@ Restaurant.init({
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        validate: {
+            isEmail: {
+                args: true,
+                msg: "Email must be a valid email"
+            }
+        }
+    },
+    capacity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            min: {
+                args: 1,
+                msg: "Capacity must be at least 1"
+            }
+        }
     },
 }, {
     sequelize: db.sequelize,

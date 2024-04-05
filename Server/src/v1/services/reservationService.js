@@ -53,14 +53,20 @@ const getReservationsByRestaurant = (req, res) => {
  * @param {Object} res
  */
 const createReservation = (req, res) => {
-    Reservation.create({
-        userId: req.user.id,
+    const item = {
+        userId: req.body.userId,
         restaurantId: req.body.restaurantId,
         date: req.body.date,
         time: req.body.time,
-        partySize: req.body.partySize
-    }).then(reservation => {
-        res.json({ reservation });
+        people: req.body.people
+    };
+
+    Reservation.build(item).validate().then(() => {
+        Reservation.create(item).then(reservation => {
+            res.json({ reservation });
+        });
+    }).catch(error => {
+        res.status(400).json({ error: error.errors[0].message });
     });
 };
 
@@ -70,15 +76,24 @@ const createReservation = (req, res) => {
  * @param {Object} res
  */
 const updateReservation = (req, res) => {
+
+    const item = {
+        userId: req.body.userId,
+        restaurantId: req.body.restaurantId,
+        date: req.body.date,
+        time: req.body.time,
+        people: req.body.people
+    };
+
     Reservation.findByPk(req.params.id).then(reservation => {
-        reservation.update({
-            userId: req.body.userId,
-            restaurantId: req.body.restaurantId,
-            date: req.body.date,
-            time: req.body.time,
-            partySize: req.body.partySize
-        }).then(reservation => {
-            res.json({ reservation });
+        if (!reservation) {
+            return res.status(404).json({ error: 'Reservation not found' });
+        }
+
+        reservation.update(item, { fields: Object.keys(item) }).then(updatedReservation => {
+            res.json({ reservation: updatedReservation });
+        }).catch(error => {
+            res.status(400).json({ error: error.errors[0].message });
         });
     });
 };
@@ -90,6 +105,9 @@ const updateReservation = (req, res) => {
  */
 const deleteReservation = (req, res) => {
     Reservation.findByPk(req.params.id).then(reservation => {
+        if (!reservation) {
+            return res.status(404).json({ error: 'Reservation not found' });
+        }
         reservation.destroy().then(() => {
             res.json({ message: "Reservation deleted" });
         });

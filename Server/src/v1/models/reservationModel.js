@@ -16,7 +16,16 @@ Reservation.init({
     },
     date: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isDate: {
+                args: true,
+                msg: "Date must be a valid date"
+            },
+            isAfter: {
+                args: new Date().toISOString().split('T')[0]},
+                msg: "Date must be after today"
+        }
     },
     time: {
         type: DataTypes.TIME,
@@ -24,7 +33,13 @@ Reservation.init({
     },
     people: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            min: {
+                args: 1,
+                msg: "Party size must be at least 1"
+            }
+        }
     }
 }, {
     sequelize: db.sequelize,

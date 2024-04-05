@@ -22,7 +22,7 @@ const getRestaurants = (req, res) => {
  * @param {Object} res - Response object
  */
 const getRestaurant = (req, res) => {
-    Restaurant.findByPk(req.params.id).then(restaurant => {
+    Restaurant.findByPk(req.params.restaurantId).then(restaurant => {
         if (!restaurant) {
             return res.status(404).json({ error: "Restaurant not found" });
         }
@@ -37,31 +37,32 @@ const getRestaurant = (req, res) => {
  */
 const createRestaurant = (req, res) => {
 
-    // add the user creating the restaurant as patron of the restaurant
-    Restaurant.create({
+    const item = {
         name: req.body.name,
         address: req.body.address,
-        phone: req.body.phone,
         email: req.body.email,
-        rating: req.body.rating,
-        image: req.body.image,
-        description: req.body.description
-    }).then(restaurant => {
+        description: req.body.description,
+        capacity: req.body.capacity
+    };
 
-        console.log(req.user.id, restaurant.id)
-        Responsable.create({
-            UserId: req.user.id,
-            RestaurantId: restaurant.id,
-            role: adminRole.patron
-        });
-
-        User.findByPk(req.user.id).then(user => {
-            user.update({
-                role: role.admin
+    Restaurant.build(item).validate().then(() => {
+        Restaurant.create(item).then(restaurant => {
+            Responsable.create({
+                UserId: req.user.id,
+                RestaurantId: restaurant.id,
+                role: adminRole.patron
             });
-        });
 
-        res.json({ restaurant });
+            User.findByPk(req.user.id).then(user => {
+                user.update({
+                    role: role.admin
+                });
+            });
+
+            res.json({ restaurant });
+        });
+    }).catch(error => {
+        res.status(400).json({ error: error.message });
     });
 }
 
@@ -71,17 +72,23 @@ const createRestaurant = (req, res) => {
  * @param {Object} res - Response object
  */
 const updateRestaurant = (req, res) => {
-    Restaurant.findByPk(req.params.id).then(restaurant => {
-        restaurant.update({
-            name: req.body.name,
-            address: req.body.address,
-            phone: req.body.phone,
-            email: req.body.email,
-            rating: req.body.rating,
-            image: req.body.image,
-            description: req.body.description
-        }).then(restaurant => {
+
+    const item = {
+        name: req.body.name,
+        address: req.body.address,
+        email: req.body.email,
+        description: req.body.description,
+        capacity: req.body.capacity
+    };
+
+    Restaurant.findByPk(req.params.restaurantId).then(restaurant => {
+        if (!restaurant) {
+            return res.status(404).json({ error: "Restaurant not found" });
+        }
+        restaurant.update(item, {fields: Object.keys(item)}).then(restaurant => {
             res.json({ restaurant });
+        }).catch(error => {
+            res.status(400).json({ error: error.message });
         });
     });
 }
@@ -92,7 +99,10 @@ const updateRestaurant = (req, res) => {
  * @param {Object} res - Response object
  */
 const deleteRestaurant = (req, res) => {
-    Restaurant.findByPk(req.params.id).then(restaurant => {
+    Restaurant.findByPk(req.params.restaurantId).then(restaurant => {
+        if (!restaurant) {
+            return res.status(404).json({ error: "Restaurant not found" });
+        }
         restaurant.destroy().then(() => {
             res.json({ message: "Restaurant deleted" });
         });

@@ -11,7 +11,13 @@ class Responsable extends Model {}
 Responsable.init({
     role: {
         type: DataTypes.ENUM(role.responsable, role.patron),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isIn: {
+                args: [[role.responsable, role.patron]],
+                msg: "Must be a valid role"
+            }
+        }
     }
 }, {
     sequelize: db.sequelize,

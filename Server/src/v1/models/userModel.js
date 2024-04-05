@@ -19,7 +19,13 @@ User.init({
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: {
+                args: true,
+                msg: "Email must be a valid email"
+            }
+        }
     },
     password: {
         type: DataTypes.STRING,
@@ -28,7 +34,13 @@ User.init({
     role: {
         type: DataTypes.ENUM(role.user, role.admin),
         defaultValue: role.user,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isIn: {
+                args: [[role.user, role.admin]],
+                msg: "Must be a valid role"
+            }
+        }
     }
 }, {
     sequelize: db.sequelize,

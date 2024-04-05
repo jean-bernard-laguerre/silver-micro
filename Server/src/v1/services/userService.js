@@ -27,13 +27,20 @@ const register = (req, res) => {
             res.json({  message: "Register failed - User already exist",
                         success: false });
         } else {
-            User.create({
+            const item = {
                 username: username,
                 password: password,
-                email: email
-            }).then(user => {
-                res.json({  message: "Registered Succesfully",
-                            success: true });
+                email: email,
+                role: config.role.user
+            };
+
+            User.build(item).validate().then(() => {
+                User.create(item).then(user => {
+                    res.json({  message: "Registered Succesfully",
+                                success: true });
+                });
+            }).catch(error => {
+                res.status(400).json({ error: error.errors[0].message });
             });
         }
     });
@@ -81,7 +88,8 @@ const authentication = (req, res) => {
 }
 
 const getUser = (req, res) => {
-    User.findByPk(req.params.id).then(user => {
+    User.findByPk(req.params.id,
+        { attributes: { exclude: ['password'] } }).then(user => {
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -90,25 +98,36 @@ const getUser = (req, res) => {
 }
 
 const getUsers = (req, res) => {
-    User.findAll().then(users => {
+    User.findAll(
+        { attributes: { exclude: ['password'] } }).then(users => {
         res.json({ users });
     });
 }
 
 const updateUser = (req, res) => {
+    const item = {
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+    };
+
     User.findByPk(req.params.id).then(user => {
-        user.update({
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password
-        }).then(user => {
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        user.update(item).then(user => {
             res.json({ user });
+        }).catch(error => {
+            res.status(400).json({ error: error.errors[0].message });
         });
     });
 }
 
 const deleteUser = (req, res) => {
     User.findByPk(req.params.id).then(user => {
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
         user.destroy();
         res.json({ message: "User deleted" });
     });
@@ -118,5 +137,7 @@ module.exports = {
     register, 
     authentication,
     getUser,
-    getUsers
+    getUsers,
+    updateUser,
+    deleteUser
 }
