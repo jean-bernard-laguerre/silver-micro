@@ -1,5 +1,5 @@
 const express = require("express");
-const reservationController = require("../controllers/reservationController")
+const reservationController = require("./Controller")
 
 const authMiddleware = require("../../middlewares/authMiddleware");
 const adminMiddleware = require("../../middlewares/adminMiddleware");

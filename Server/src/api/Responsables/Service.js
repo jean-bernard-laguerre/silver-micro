@@ -1,5 +1,5 @@
-const Responsable = require('../models/responsableModel');
-const User = require('../models/userModel');
+const Responsable = require('./Model');
+const User = require('../Users/Model');
 
 const role = require('../../config').role;
 

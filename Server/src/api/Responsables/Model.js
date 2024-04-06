@@ -3,8 +3,8 @@ const db = require('../../database');
 const config = require('../../config');
 const role = config.adminRole;
 
-const Restaurant = require('./restaurantModel');
-const User = require('./userModel');
+const Restaurant = require('../Restaurants/Model');
+const User = require('../Users/Model');
 
 class Responsable extends Model {}
 

@@ -1,4 +1,4 @@
-const services = require("../services/avisService");
+const services = require("./Service");
 
 const avisController = {
 

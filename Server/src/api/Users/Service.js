@@ -1,6 +1,6 @@
-const User = require("../models/userModel")
+const User = require("./Model")
 const config = require("../../config")
-const auth = require("./auth")
+const auth = require("../services/auth")
 const hash = require('hash.js');
 
 /**

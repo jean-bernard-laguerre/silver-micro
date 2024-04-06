@@ -1,8 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('../../database');
 
-const Restaurant = require("../models/restaurantModel")
-const User = require("../models/userModel")
+const Restaurant = require("../Restaurants/Model")
+const User = require("../Users/Model")
 
 const Avis = db.sequelize.define('Avis', {
     id: {

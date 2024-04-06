@@ -1,4 +1,5 @@
-const Reservation = require('../models/reservationModel');
+const Reservation = require('./Model');
+const Restaurant = require('../Restaurants/Model');
 
 /**
  * Get all reservations
@@ -54,19 +55,26 @@ const getReservationsByRestaurant = (req, res) => {
  */
 const createReservation = (req, res) => {
     const item = {
-        userId: req.body.userId,
-        restaurantId: req.body.restaurantId,
+        UserId: req.user.id,
+        RestaurantId: req.body.restaurantId,
         date: req.body.date,
         time: req.body.time,
         people: req.body.people
     };
 
-    Reservation.build(item).validate().then(() => {
-        Reservation.create(item).then(reservation => {
-            res.json({ reservation });
+    checkAvailability(item).then(available => {
+
+        if (!available) {
+            return res.status(400).json({ error: 'Restaurant is not available for this date and time' });
+        }
+
+        Reservation.build(item).validate().then(() => {
+            Reservation.create(item).then(reservation => {
+                res.json({ reservation });
+            });
+        }).catch(error => {
+            res.status(400).json({ error: error.errors[0].message });
         });
-    }).catch(error => {
-        res.status(400).json({ error: error.errors[0].message });
     });
 };
 
@@ -78,8 +86,8 @@ const createReservation = (req, res) => {
 const updateReservation = (req, res) => {
 
     const item = {
-        userId: req.body.userId,
-        restaurantId: req.body.restaurantId,
+        UserId: req.body.userId,
+        RestaurantId: req.body.restaurantId,
         date: req.body.date,
         time: req.body.time,
         people: req.body.people
@@ -113,6 +121,26 @@ const deleteReservation = (req, res) => {
         });
     });
 };
+
+//function checking if the restaurant is available for the reservation date and time based on the restaurant capacity
+const checkAvailability = (item) => {
+    return Restaurant.findByPk(item.RestaurantId).then(restaurant => {
+        return Reservation.findAll({
+            where: {
+                RestaurantId: item.RestaurantId,
+                // date in DD/MM/YYYY format
+                date: new Date(item.date).toISOString().split('T')[0],
+                // time in HH:MM:SS format 
+                time: (item.time + ':00')
+            }
+        }).then(reservations => {
+            console.log(reservations);
+            const totalPeople = reservations.reduce((acc, reservation) => acc + reservation.people, 0);
+            return totalPeople + item.people <= restaurant.capacity;
+        });
+    });
+};
+
 
 module.exports = {
     getReservations,

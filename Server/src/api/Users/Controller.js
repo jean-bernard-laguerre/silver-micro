@@ -1,4 +1,4 @@
-const services = require("../services/userService");
+const services = require("./Service");
 const tools = require("../services/tools");
 
 const authenticate = (req, res) => {

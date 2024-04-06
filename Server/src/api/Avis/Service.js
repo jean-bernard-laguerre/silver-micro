@@ -1,4 +1,4 @@
-const avisModel = require('../models/avisModel');
+const avisModel = require('./Model');
 
 const AvisService = {
 

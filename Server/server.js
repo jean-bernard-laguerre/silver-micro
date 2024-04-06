@@ -15,18 +15,18 @@ app.use(session({
     saveUninitialized:true
 }));
 
-const userRoutes = require("./src/v1/routes/userRoutes");
-const restaurantRoutes = require("./src/v1/routes/restaurantRoutes");
-const responsableRoutes = require("./src/v1/routes/responsableRoutes");
-const reservationRoutes = require("./src/v1/routes/reservationRoutes");
-const avisRoutes = require("./src/v1/routes/avisRoutes");
+const userRoutes = require("./src/api/Users/Routes");
+const restaurantRoutes = require("./src/api/Restaurants/Routes");
+const responsableRoutes = require("./src/api/Responsables/Routes");
+const reservationRoutes = require("./src/api/Reservations/Routes");
+const avisRoutes = require("./src/api/Avis/Routes");
 
 
-app.use("/api/v1/user/", userRoutes);
-app.use("/api/v1/restaurant/", restaurantRoutes);
-app.use("/api/v1/responsable/", responsableRoutes);
-app.use("/api/v1/reservation/", reservationRoutes);
-app.use("/api/v1/avis/", avisRoutes);
+app.use("/api/user/", userRoutes);
+app.use("/api/restaurant/", restaurantRoutes);
+app.use("/api/responsable/", responsableRoutes);
+app.use("/api/reservation/", reservationRoutes);
+app.use("/api/avis/", avisRoutes);
 
 
 app.listen(8000, () => {

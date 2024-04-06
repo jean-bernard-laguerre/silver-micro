@@ -1,6 +1,6 @@
 const express = require("express");
 const config = require("../../config");
-const restaurantController = require("../controllers/restaurantController")
+const restaurantController = require("./Controller")
 
 const authMiddleware = require("../../middlewares/authMiddleware");
 const adminMiddleware = require("../../middlewares/adminMiddleware");

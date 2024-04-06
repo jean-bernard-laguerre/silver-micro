@@ -1,5 +1,5 @@
 const express = require("express");
-const responsableController = require("../controllers/responsableController")
+const responsableController = require("./Controller")
 
 const authMiddleware = require("../../middlewares/authMiddleware");
 const adminMiddleware = require("../../middlewares/adminMiddleware");

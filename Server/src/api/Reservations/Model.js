@@ -1,8 +1,8 @@
 const { DataTypes, Model } = require('sequelize');
 const db = require('../../database');
 
-const Restaurant =  require('./restaurantModel');
-const User = require('./userModel');
+const Restaurant =  require('../Restaurants/Model');
+const User = require('../Users/Model');
 
 class Reservation extends Model {}
 
@@ -23,13 +23,20 @@ Reservation.init({
                 msg: "Date must be a valid date"
             },
             isAfter: {
-                args: new Date().toISOString().split('T')[0]},
+                args: new Date().toISOString().split('T')[0],
                 msg: "Date must be after today"
+            }
         }
     },
     time: {
         type: DataTypes.TIME,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            is: {
+                args: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
+                msg: "Time must be a valid time"
+            }
+        }
     },
     people: {
         type: DataTypes.INTEGER,

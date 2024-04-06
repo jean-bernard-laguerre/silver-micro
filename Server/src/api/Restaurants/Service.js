@@ -1,6 +1,6 @@
-const Restaurant = require('../models/restaurantModel');
-const Responsable = require('../models/responsableModel');
-const User = require('../models/userModel');
+const Restaurant = require('./Model');
+const Responsable = require('../Responsables/Model');
+const User = require('../Users/Model');
 
 const adminRole = require('../../config').adminRole;
 const role = require('../../config').role;

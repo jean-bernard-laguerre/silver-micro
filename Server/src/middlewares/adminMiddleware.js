@@ -1,4 +1,4 @@
-const Responsable = require('../v1/models/responsableModel');
+const Responsable = require('../api/Responsables/Model');
 
 const userRole = require('../config').role;
 
