@@ -62,6 +62,21 @@ const createReservation = (req, res) => {
         people: req.body.people
     };
 
+    // check if the user already has a reservation for the same date and time
+    Reservation.findAll({
+        where: {
+            UserId: item.UserId,
+            // date in DD/MM/YYYY format
+            date: new Date(item.date).toISOString(),
+            // time in HH:MM:SS format 
+            time: (item.time + ':00')
+        }
+    }).then(reservations => {
+        if (reservations.length > 0) {
+            return res.status(400).json({ error : 'You already have a reservation for this date and time' });
+        }
+    });
+
     checkAvailability(item).then(available => {
 
         if (!available) {
@@ -70,10 +85,10 @@ const createReservation = (req, res) => {
 
         Reservation.build(item).validate().then(() => {
             Reservation.create(item).then(reservation => {
-                res.json({ reservation });
+                return res.json({ reservation });
             });
         }).catch(error => {
-            res.status(400).json({ error: error.errors[0].message });
+            return res.status(400).json({ error: error.errors[0].message });
         });
     });
 };
@@ -129,12 +144,11 @@ const checkAvailability = (item) => {
             where: {
                 RestaurantId: item.RestaurantId,
                 // date in DD/MM/YYYY format
-                date: new Date(item.date).toISOString().split('T')[0],
+                date: new Date(item.date).toISOString(),
                 // time in HH:MM:SS format 
                 time: (item.time + ':00')
             }
         }).then(reservations => {
-            console.log(reservations);
             const totalPeople = reservations.reduce((acc, reservation) => acc + reservation.people, 0);
             return totalPeople + item.people <= restaurant.capacity;
         });
