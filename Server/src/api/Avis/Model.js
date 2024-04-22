@@ -4,36 +4,33 @@ const db = require('../../database');
 const Restaurant = require("../Restaurants/Model")
 const User = require("../Users/Model")
 
-const Avis = db.sequelize.define('Avis', {
+class Avis extends Sequelize.Model { }
+
+Avis.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-
-    //Evaluation avec Note 
     rating: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            
-            min: {
-                args: 1,
-                msg: 'Valeur min 1'
-            },
-            max: {
-                args: 5,
-                msg: 'Valeur max 5'
+            isIn : {
+                args: [[ 0, 1, 2, 3, 4, 5]],
+                msg: "Rating must be between 0 and 5"
             }
         }
     },
-    //Evaluation sans Avis Ecrit
     review: {
         type: DataTypes.TEXT,
-        allowNull: true 
+        allowNull: true
     }
-});
+}, {
+    sequelize: db.sequelize,
+    modelName: 'Avis',
+})
 
 Avis.belongsTo(Restaurant)
 Avis.belongsTo(User)

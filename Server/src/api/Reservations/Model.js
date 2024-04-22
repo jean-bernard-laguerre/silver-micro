@@ -24,7 +24,7 @@ Reservation.init({
             },
             isAfter: {
                 args: new Date().toISOString().split('T')[0],
-                msg: "Date must be after today"
+                msg: "Date must be after current date"
             }
         }
     },
@@ -33,7 +33,7 @@ Reservation.init({
         allowNull: false,
         validate: {
             is: {
-                args: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
+                args: /^([0-1]?\d|2[0-3]):[0-5]\d$/,
                 msg: "Time must be a valid time"
             }
         }

@@ -1,71 +1,119 @@
-const avisModel = require('./Model');
+const Avis = require('./Model');
+const User = require('../Users/Model');
+const Restaurant = require('../Restaurants/Model');
 
 const AvisService = {
 
-  // Créer un Avis
-  createAvis: async (avisDetails) => {
-    try {
-      const avis = await avisModel.create(avisDetails);
-      return avis;
-    } catch (error) {
-      console.error("Error creating avis:", error);
-      throw new Error('Failed to create avis');
-    }
+  // obtenir l'avis par Utilisateur
+  getAvisById: async (req, res) => {
+    Avis.findByPk(req.params.id).then(avis => {
+      if (!avis) {
+        return res.status(404).json({ error: "Review not found" });
+      }
+      res.json({ avis });
+    });
   },
 
-  // obtenir l'avis par Utilisateur
-  getAvisById: async (id) => {
-    try {
-      const avis = await avisModel.findByPk(id);
-      if (!avis) {
-        throw new Error('Avis not found');
+  getAvisByUser: async (req, res) => {
+
+    User.findByPk(req.params.userId).then(user => {
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
       }
-      return avis;
-    } catch (error) {
-      console.error("Error retrieving avis by ID:", error);
-      throw new Error('Failed to retrieve avis');
-    }
+    });
+
+    Avis.findAll({ where: { userId: req.params.userId } }).then(avis => {
+      res.json({ avis });
+    });
+  },
+
+  getAvisByRestaurant: async (req, res) => {
+
+    Restaurant.findByPk(req.params.restaurantId).then(restaurant => {
+      if (!restaurant) {
+        return res.status(404).json({ error: "Restaurant not found" });
+      }
+    });
+
+    Avis.findAll({ where: { restaurantId: req.params.restaurantId } }).then(avis => {
+      res.json({ avis });
+    });
   },
 
   // obtenir tous les avis
-  getAllAvis: async () => {
-    try {
-      const allAvis = await avisModel.findAll();
-      return allAvis;
-    } catch (error) {
-      console.error("Error retrieving all avis:", error);
-      throw new Error('Failed to retrieve avis');
-    }
+  getAllAvis: async (req, res) => {
+    Avis.findAll().then(avis => {
+      res.json({ avis });
+    });
+  },
+
+  createAvis: async (req, res) => {
+
+    const item = {
+      UserId: req.user.id,
+      RestaurantId: req.body.restaurantId,
+      rating: req.body.rating,
+      review: req.body.review
+    };
+
+    console.log(item);
+
+    Avis.findAll({ where: { 
+      UserId: item.UserId, 
+      RestaurantId: item.RestaurantId } }).then(avis => {
+      if (avis.length > 0) {
+        return res.status(404).json({ error: "Review already exist" });
+      }
+
+      Avis.build(item).validate().then(() => {
+        Avis.create(item).then(avis => {
+          res.json({ avis });
+        })
+      }).catch(error => {
+        res.status(400).json({ error: error.message });
+      });
+    });
   },
 
   // MAJ un avis
-  updateAvis: async (id, updateDetails) => {
-    try {
-      const avis = await avisModel.findByPk(id);
+  updateAvis: async (req, res) => {
+    const item = {
+      rating: req.body.rating,
+      review: req.body.review
+    };
+
+    Avis.findByPk(req.params.id).then(avis => {
       if (!avis) {
-        throw new Error('Avis not found');
+        return res.status(404).json({ error: "Review not found" });
       }
-      const updatedAvis = await avis.update(updateDetails);
-      return updatedAvis;
-    } catch (error) {
-      console.error("Error updating avis:", error);
-      throw new Error('Failed to update avis');
-    }
+
+      if (req.user.id !== avis.UserId) {
+        return res.status(403).json({ error: "You are not allowed to update this review" });
+      }
+
+      avis.update(item, {fields: Object.keys(item)}).then(avis => {
+        res.json({ avis });
+      }).catch(error => {
+        res.status(400).json({ error: error.message });
+      });
+    });
   },
 
   // Supprimer un Avis
-  deleteAvis: async (id) => {
-    try {
-      const avis = await avisModel.findByPk(id);
+  deleteAvis: async (req, res) => {
+    Avis.findByPk(req.params.id).then(avis => {
       if (!avis) {
-        throw new Error('Avis not found');
+        return res.status(404).json({ error: "Review not found" });
       }
-      await avis.destroy();
-      return { message: 'Avis successfully deleted' };
-    } catch (error) {
-      console.error("Error deleting avis:", error);
-      throw new Error('Failed to delete avis');
-    }
+
+      if (req.user.id !== avis.UserId) {
+        return res.status(403).json({ error: "You are not allowed to delete this review" });
+      }
+      
+      avis.destroy().then(() => {
+        res.json({ message: "Review deleted" });
+      });
+    });
   }
 
 };

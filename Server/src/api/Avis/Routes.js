@@ -1,21 +1,17 @@
 const express = require("express");
 const avisController = require("./Controller");
 
+const authMiddleware = require("../../middlewares/authMiddleware");
+const adminMiddleware = require("../../middlewares/adminMiddleware");
+
 const avisRouter = express.Router();
 
-// Publier un avis
-avisRouter.post("/", avisController.createAvis);
-
-// obtenir les avis
 avisRouter.get("/", avisController.getAllAvis);
-
-// obtenir un avis par Id
 avisRouter.get("/:id", avisController.getAvisById);
-
-// MAJ d'un avis uniquement si l'utilisateur est autorisé
-avisRouter.put("/:id", avisController.updateAvis);
-
-// Supprimer un avis uniquement si l'utilisateur est autorisé
-avisRouter.delete("/:id", avisController.deleteAvis);
+avisRouter.get("/user/:userId", avisController.getAvisByUser);
+avisRouter.get("/restaurant/:restaurantId", avisController.getAvisByRestaurant);
+avisRouter.post("/", authMiddleware(), avisController.createAvis);
+avisRouter.put("/:id", authMiddleware(), avisController.updateAvis);
+avisRouter.delete("/:id", authMiddleware(), avisController.deleteAvis);
 
 module.exports = avisRouter;
