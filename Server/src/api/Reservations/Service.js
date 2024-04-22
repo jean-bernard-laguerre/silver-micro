@@ -113,6 +113,10 @@ const updateReservation = (req, res) => {
             return res.status(404).json({ error: 'Reservation not found' });
         }
 
+        if (reservation.UserId !== item.UserId) {
+            return res.status(403).json({ error: 'Unauthorized' });
+        }
+
         reservation.update(item, { fields: Object.keys(item) }).then(updatedReservation => {
             res.json({ reservation: updatedReservation });
         }).catch(error => {
@@ -131,6 +135,11 @@ const deleteReservation = (req, res) => {
         if (!reservation) {
             return res.status(404).json({ error: 'Reservation not found' });
         }
+
+        if (reservation.UserId !== req.user.id) {
+            return res.status(403).json({ error: 'Unauthorized' });
+        }
+
         reservation.destroy().then(() => {
             res.json({ message: "Reservation deleted" });
         });
