@@ -30,6 +30,30 @@ const getRestaurant = (req, res) => {
     });
 };
 
+const getRestaurantByUser = (req, res) => {
+    Responsable.findOne({
+        where: {UserId: req.params.userId}
+    }).then(responsable => {
+        if (!responsable) {
+            return res.status(404).json({ error: "Restaurant not found" });
+        }
+
+        console.log(responsable);
+        // get all the different restaurants of the user from the responsable result
+        let restaurants = [];
+        responsable.dataValues.forEach(element => {
+            restaurants.push(element.RestaurantId);
+        });
+
+        Restaurant.findAll({
+            where: {id: restaurants}
+        }).then(restaurants => {
+            res.json({ restaurants });
+        });
+
+    });
+};
+
 /**
  * Create a new restaurant
  * @param {Object} req - Request object
@@ -112,6 +136,7 @@ const deleteRestaurant = (req, res) => {
 module.exports = {
     getRestaurants,
     getRestaurant,
+    getRestaurantByUser,
     createRestaurant,
     updateRestaurant,
     deleteRestaurant
