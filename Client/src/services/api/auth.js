@@ -7,7 +7,7 @@ const Auth = {
             password: password
         })
         .then(response => {
-            localStorage.setItem('token', response.data.token)
+            localStorage.setItem('silvermicro_token', response.data.token)
         
         })
     },

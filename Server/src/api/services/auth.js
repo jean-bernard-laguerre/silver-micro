@@ -13,7 +13,7 @@ const auth = {
                 id: user.id, 
                 username: user.username,
                 role: user.role
-            }, process.env.JWT_SECRET, { expiresIn: 86400 });
+            }, process.env.JWT_SECRET, { expiresIn: "7d" });
             return token;
         },
 }
