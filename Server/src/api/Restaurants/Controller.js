@@ -8,10 +8,6 @@ const getRestaurant = (req, res) => {
     services.getRestaurant(req, res);
 }
 
-const getRestaurantByUser = (req, res) => {
-    services.getRestaurantByUser(req, res);
-}
-
 const createRestaurant = (req, res) => {
     services.createRestaurant(req, res);
 }
@@ -27,7 +23,6 @@ const deleteRestaurant = (req, res) => {
 module.exports = {
     getRestaurants,
     getRestaurant,
-    getRestaurantByUser,
     createRestaurant,
     updateRestaurant,
     deleteRestaurant

@@ -35,8 +35,8 @@ Avis.init({
 Avis.belongsTo(Restaurant)
 Avis.belongsTo(User)
 
-User.hasMany(Avis, {onDelete: 'cascade', hooks:true})
-Restaurant.hasMany(Avis, {onDelete: 'cascade', hooks:true })
+User.hasMany(Avis, {onDelete: 'cascade' })
+Restaurant.hasMany(Avis, {onDelete: 'cascade' })
 
 Avis.sync({ force: false });
 

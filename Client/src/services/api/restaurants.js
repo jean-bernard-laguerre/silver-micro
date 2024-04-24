@@ -11,11 +11,6 @@ const Restaurant = {
         return response.data
     },
 
-    async getByUser (user_id) {
-        const response = await API.get(`/restaurant/user/${user_id}`)
-        return response.data
-    },
-
     async create (name, description, address, email, capacity) {
         const response = await API.post('/restaurant', {
             name: name,

@@ -75,20 +75,20 @@ const createReservation = (req, res) => {
         if (reservations.length > 0) {
             return res.status(400).json({ error : 'You already have a reservation for this date and time' });
         }
-    });
 
-    checkAvailability(item).then(available => {
+        checkAvailability(item).then(available => {
 
-        if (!available) {
-            return res.status(400).json({ error: 'Restaurant is not available for this date and time' });
-        }
-
-        Reservation.build(item).validate().then(() => {
-            Reservation.create(item).then(reservation => {
-                return res.json({ reservation });
+            if (!available) {
+                return res.status(400).json({ error: 'Restaurant is not available for this date and time' });
+            }
+    
+            Reservation.build(item).validate().then(() => {
+                Reservation.create(item).then(reservation => {
+                    return res.json({ reservation });
+                });
+            }).catch(error => {
+                return res.status(400).json({ error: error.errors[0].message });
             });
-        }).catch(error => {
-            return res.status(400).json({ error: error.errors[0].message });
         });
     });
 };
