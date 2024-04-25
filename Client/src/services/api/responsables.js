@@ -1,6 +1,6 @@
 import API from '../config'
 
-const Responsable = {
+const Responsables = {
     async get() {
         const response = await API.get('/responsable')
         return response.data
@@ -36,4 +36,4 @@ const Responsable = {
     },
 }
 
-export default Responsable
+export default Responsables

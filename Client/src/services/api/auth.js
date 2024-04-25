@@ -2,25 +2,20 @@ import API from '../config'
 
 const Auth = {
     async login (email, password) {
-        API.post('/user/auth', {
+        const response = await API.post('/user/auth', {
             email: email,
             password: password
         })
-        .then(response => {
-            localStorage.setItem('silvermicro_token', response.data.token)
-        
-        })
+        return response.data
     },
 
     async register (username, email, password) {
-        API.post('/user/register', {
+        const response = await API.post('/user', {
             username: username,
             email: email,
             password: password
         })
-        .then(response => {
-            console.log(response.data)
-        })
+        return response.data
     }
 }
 
