@@ -1,53 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useCallback, useMemo } from 'react'
+import AuthContext from './contexts/authContext'
 import './App.css'
 
 import Auth from './services/api/auth'
-import User from './services/api/users'
-import Restaurant from './services/api/restaurants'
-import Responsable from './services/api/responsables'
-import Reservation from './services/api/reservations'
+import Users from './services/api/users'
+import Restaurants from './services/api/restaurants'
+import Responsables from './services/api/responsables'
+import Reservations from './services/api/reservations'
 import Avis from './services/api/avis'
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  const login = () => {
-    Auth.login(
-      'Dwight.Sauer74@hotmail.com', 
-      'test')
+  const [currentUser, setCurrentUser] = useState(
+    localStorage.getItem('user') ?
+    JSON.parse(localStorage.getItem('user')) : null
+  )
+
+  const login = useCallback((user) => {
+    localStorage.setItem('user', JSON.stringify(user))
+    setCurrentUser(user)
+  }, [])
+
+  const logout = useCallback(() => {
+    localStorage.removeItem('user')
+    setCurrentUser(null)
+  }, [])
+
+  const connect = () => {
+    Auth.login("Dwight.Sauer74@hotmail.com", "test")
+    .then(response => {
+      localStorage.setItem('token', response.token)
+      login(response.user)
+    })
   }
 
-  const logout = () => {
-    localStorage.removeItem('token')
-  }
-
-  const register = () => {
-    Auth.register(
-      'testUser',
-      'test@test.fr',
-      'test')
-  }
-
-
-
+  const authValue = useMemo(() => ({
+    currentUser,
+    login,
+    logout
+  }), [currentUser, login, logout])
 
   return (
-    <>
+    <AuthContext.Provider value={authValue}>
       <div>
-        <button onClick={login}>Login</button>
-        <button onClick={logout}>Logout</button>
-        <button onClick={register}>Register</button>
+        <h2>{currentUser ? currentUser.username : 'No user connected'}</h2>
       </div>
       <div>
-        <button onClick={User.get}>Get Users</button>
-        <button onClick={Restaurant.get}>Get Restaurants</button>
-        <button onClick={Responsable.get}>Get Responsables</button>
-        <button onClick={Reservation.get}>Get Reservations</button>
+        <button onClick={connect}>Login</button>
+        <button onClick={logout}>Logout</button>
+      </div>
+      <div>
+        <button onClick={Users.get}>Get Users</button>
+        <button onClick={Restaurants.get}>Get Restaurants</button>
+        <button onClick={Responsables.get}>Get Responsables</button>
+        <button onClick={Reservations.get}>Get Reservations</button>
         <button onClick={Avis.get}>Get Avis</button>
       </div>
-    </>
+    </AuthContext.Provider>
   )
 }
 

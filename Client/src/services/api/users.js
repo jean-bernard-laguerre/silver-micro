@@ -1,6 +1,6 @@
 import API from '../config'
 
-const User = {
+const Users = {
     async get() {
         const response = await API.get('/user')
         return response.data
@@ -26,4 +26,4 @@ const User = {
     },
 }
 
-export default User
+export default Users

@@ -1,6 +1,6 @@
 import API from '../config'
 
-const Restaurant = {
+const Restaurants = {
     async get () {
         const response = await API.get('/restaurant')
         return response.data
@@ -39,4 +39,4 @@ const Restaurant = {
     },
 }
 
-export default Restaurant
+export default Restaurants

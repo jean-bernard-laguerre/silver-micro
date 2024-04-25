@@ -1,6 +1,6 @@
 import API from '../config'
 
-const Reservation = {
+const Reservations = {
     async get() {
         const response = await API.get('/reservation')
         return response.data
@@ -47,4 +47,4 @@ const Reservation = {
     },
 }
 
-export default Reservation
+export default Reservations

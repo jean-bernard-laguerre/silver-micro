@@ -77,9 +77,10 @@ const authentication = (req, res) => {
         else {
             res.json({  message: "Logged in Successfully",
                         success: true,
-                        id: user.id,
-                        role: user.role,
-                        username: user.username,
+                        user: {
+                            id: user.id,
+                            role: user.role,
+                            username: user.username},
                         token: auth.generateToken(user)
                     });
             return true;
