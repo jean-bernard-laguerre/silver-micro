@@ -1,4 +1,5 @@
 const Responsable = require('./Model');
+const Restaurant = require('../Restaurants/Model')
 const User = require('../Users/Model');
 
 const role = require('../../config').role;
@@ -20,7 +21,12 @@ const getResponsables = (req, res) => {
  * @param {Object} res - response object
  */
 const getResponsablesByUser = (req, res) => {
-    Responsable.findAll({ where: { userId: req.params.userId } }).then(responsables => {
+    Responsable.findAll({ 
+        where: { userId: req.params.userId },
+        include: [{
+            model: Restaurant
+        }]
+    }).then(responsables => {
         if (!responsables) {
             return res.status(404).json({ error: "Responsable not found" });
         }
@@ -34,7 +40,13 @@ const getResponsablesByUser = (req, res) => {
  * @param {Object} res - response object
  */
 const getResponsablesByRestaurant = (req, res) => {
-    Responsable.findAll({ where: { restaurantId: req.params.restaurantId } }).then(responsables => {
+    Responsable.findAll({ 
+        where: { restaurantId: req.params.restaurantId },
+        include: [{
+            model: User,
+            attributes: ['username', 'email']
+        }]
+    }).then(responsables => {
         res.json({ responsables });
     });
 }

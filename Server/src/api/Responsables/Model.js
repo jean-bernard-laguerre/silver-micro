@@ -27,8 +27,8 @@ Responsable.init({
 Responsable.belongsTo(User);
 Responsable.belongsTo(Restaurant);
 
-User.hasMany(Responsable, { onDelete: 'cascade', hooks: true });
-Restaurant.hasMany(Responsable, { onDelete: 'cascade', hooks: true });
+User.hasMany(Responsable, { onDelete: 'cascade' });
+Restaurant.hasMany(Responsable, { onDelete: 'cascade' });
 
 Responsable.sync({ force: false })
 

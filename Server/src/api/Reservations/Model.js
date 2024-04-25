@@ -56,8 +56,8 @@ Reservation.init({
 Reservation.belongsTo(User);
 Reservation.belongsTo(Restaurant);
 
-User.hasMany(Reservation, { onDelete: 'cascade', hooks: true });
-Restaurant.hasMany(Reservation, { onDelete: 'cascade', hooks: true });
+User.hasMany(Reservation, { onDelete: 'cascade' });
+Restaurant.hasMany(Reservation, { onDelete: 'cascade' });
 
 Reservation.sync({ force: false })
 

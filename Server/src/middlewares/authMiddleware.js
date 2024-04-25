@@ -8,9 +8,9 @@ const cookie = require('cookie');
  */
 const authMiddleware = (allowedRole = "any") => {
     return (req, res, next) => {
-        // get the token from request cookies
-        const token = cookie.parse(req.headers.cookie).token;
-        
+        // get the bearer token from the headers without the Bearer prefix
+        const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
+
         // if token is not present, return 401
         if (!token) {
             return res.status(401).json({ message: 'Missing Token' });
