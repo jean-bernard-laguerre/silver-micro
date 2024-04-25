@@ -8,6 +8,10 @@ const getRestaurant = (req, res) => {
     services.getRestaurant(req, res);
 }
 
+const searchRestaurants = (req, res) => {
+    services.searchRestaurants(req, res);
+}
+
 const createRestaurant = (req, res) => {
     services.createRestaurant(req, res);
 }
@@ -23,6 +27,7 @@ const deleteRestaurant = (req, res) => {
 module.exports = {
     getRestaurants,
     getRestaurant,
+    searchRestaurants,
     createRestaurant,
     updateRestaurant,
     deleteRestaurant
