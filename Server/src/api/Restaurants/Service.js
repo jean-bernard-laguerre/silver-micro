@@ -84,7 +84,19 @@ const searchRestaurants = (req, res) => {
             name: {
                 [Op.like]: `%${sanitizedInput}%`
             }
-        }
+        },
+        include: [{
+            model: Avis,
+            attributes: [],
+            required: false
+        }],
+        attributes: {
+            include: [
+                [Sequelize.fn('AVG', Sequelize.col('avis.rating')), 'averageRating'],
+                [Sequelize.fn('COUNT', Sequelize.col('avis.id')), 'nbAvis']
+            ]
+        },
+        group: ['Restaurant.id']
     }).then(restaurants => {
         res.json({ restaurants });
     });
