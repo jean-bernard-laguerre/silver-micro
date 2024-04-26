@@ -1,13 +1,32 @@
 import { useState, useCallback, useMemo } from 'react'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import AuthContext from './contexts/authContext'
 import './App.css'
 
-import Auth from './services/api/auth'
-import Users from './services/api/users'
-import Restaurants from './services/api/restaurants'
-import Responsables from './services/api/responsables'
-import Reservations from './services/api/reservations'
-import Avis from './services/api/avis'
+
+import Home from './pages/home'
+import Login from './pages/login'
+import Register from './pages/register'
+import Reservations from './pages/reservations'
+import Profile from './pages/profile'
+import AdminRestaurants from './pages/admin/restaurants'
+import AdminRestaurant from './pages/admin/restaurant';
+import { Button } from './components/ui/button';
+
+const routes = [
+  { path: '/', element: <Home/> },
+  { path: '/login', element: <Login/> },
+  { path: '/register', element: <Register/> },
+  { path: '/reservations', element: <Reservations/> },
+  { path: '/profile', element: <Profile/> },
+  { path: '/admin', element: <AdminRestaurants/> },
+  { path: '/admin/restaurant/:id', element: <AdminRestaurant/> },
+]
+
+const router = createBrowserRouter(routes, {
+  basename: '/'
+})
 
 function App() {
 
@@ -42,20 +61,9 @@ function App() {
 
   return (
     <AuthContext.Provider value={authValue}>
-      <div>
-        <h2>{currentUser ? currentUser.username : 'No user connected'}</h2>
-      </div>
-      <div>
-        <button onClick={connect}>Login</button>
-        <button onClick={logout}>Logout</button>
-      </div>
-      <div>
-        <button onClick={Users.get}>Get Users</button>
-        <button onClick={Restaurants.get}>Get Restaurants</button>
-        <button onClick={Responsables.get}>Get Responsables</button>
-        <button onClick={Reservations.get}>Get Reservations</button>
-        <button onClick={Avis.get}>Get Avis</button>
-      </div>
+      <RouterProvider 
+        router={router}
+      />        
     </AuthContext.Provider>
   )
 }
