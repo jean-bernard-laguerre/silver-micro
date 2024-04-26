@@ -1,6 +1,9 @@
 const Responsable = require('./Model');
 const Restaurant = require('../Restaurants/Model')
 const User = require('../Users/Model');
+const Avis = require('../Avis/Model');
+
+const Sequelize = require('sequelize');
 
 const role = require('../../config').role;
 
@@ -24,7 +27,16 @@ const getResponsablesByUser = (req, res) => {
     Responsable.findAll({ 
         where: { userId: req.params.userId },
         include: [{
-            model: Restaurant
+            model: Restaurant,
+            // get average rating of restaurant from avis
+            include: [{
+                model: Avis,
+                attributes: [
+                    [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+                ],
+                required: false
+            }],
+            group: ['Restaurant.id'],
         }]
     }).then(responsables => {
         if (!responsables) {
