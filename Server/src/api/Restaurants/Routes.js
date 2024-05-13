@@ -9,7 +9,7 @@ const restaurantRouter = express.Router();
 
 restaurantRouter.get("/" , restaurantController.getRestaurants);
 restaurantRouter.get("/:restaurantId" , restaurantController.getRestaurant);
-restaurantRouter.get("/search/:name" , restaurantController.searchRestaurants);
+restaurantRouter.get("/search" , restaurantController.searchRestaurants);
 restaurantRouter.post("/" , authMiddleware(), restaurantController.createRestaurant);
 restaurantRouter.put("/:restaurantId" , authMiddleware(), adminMiddleware(config.adminRole.patron), restaurantController.updateRestaurant);
 restaurantRouter.delete("/:restaurantId" , authMiddleware(), adminMiddleware(config.adminRole.patron), restaurantController.deleteRestaurant);
