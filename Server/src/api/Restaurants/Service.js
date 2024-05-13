@@ -83,14 +83,14 @@ const searchRestaurants = (req, res) => {
     }
     let whereClause = {};
 
-    if (req.params.category) {
+    if (req.query.category) {
         const sanitizedCategory = validator.escape(req.query.category);
         whereClause.category = {
             [Op.like]: `%${sanitizedCategory}%`
         };
     }
 
-    if (req.params.name) {
+    if (req.query.name) {
         const sanitizedInput = validator.escape(req.query.name);
         whereClause.name = {
             [Op.like]: `%${sanitizedInput}%`
