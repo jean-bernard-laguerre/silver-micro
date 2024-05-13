@@ -78,13 +78,27 @@ const getRestaurant = (req, res) => {
 */
 const searchRestaurants = (req, res) => {
 
-    const sanitizedInput = validator.escape(req.params.name);
+    if (!req.query.name && !req.query.category) {
+        return res.status(400).json({ error: 'At least one of name or category must be provided' });
+    }
+    let whereClause = {};
+
+    if (req.params.category) {
+        const sanitizedCategory = validator.escape(req.query.category);
+        whereClause.category = {
+            [Op.like]: `%${sanitizedCategory}%`
+        };
+    }
+
+    if (req.params.name) {
+        const sanitizedInput = validator.escape(req.query.name);
+        whereClause.name = {
+            [Op.like]: `%${sanitizedInput}%`
+        };
+    }
+
     Restaurant.findAll({
-        where: {
-            name: {
-                [Op.like]: `%${sanitizedInput}%`
-            }
-        },
+        where: whereClause,
         include: [{
             model: Avis,
             attributes: [],
