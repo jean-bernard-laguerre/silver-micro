@@ -21,7 +21,7 @@ const Reservations = {
         return response.data
     },
 
-    async create( restaurant_id, date, time, people) {
+    async create({restaurant_id, date, time, people}) {
         const response = await API.post('/reservation', {
             restaurant_id: restaurant_id,
             date: date,
@@ -31,7 +31,7 @@ const Reservations = {
         return response.data
     },
 
-    async update(id, restaurant_id, date, time, people) {
+    async update({id, restaurant_id, date, time, people}) {
         const response = await API.put(`/reservation/${id}`, {
             restaurant_id: restaurant_id,
             date: date,

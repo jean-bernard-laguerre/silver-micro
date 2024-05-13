@@ -16,21 +16,21 @@ const Responsables = {
         return response.data
     },
 
-    async create(restaurant_id, user_id, role) {
+    async create({restaurant_id, user_id, role}) {
         const response = await API.post(`/responsable/restaurant/${restaurant_id}/${user_id}`, {
             role: role
         })
         return response.data
     },
 
-    async update(restaurant_id, user_id, role) {
+    async update({restaurant_id, user_id, role}) {
         const response = await API.put(`/responsable/restaurant/${restaurant_id}/${user_id}`, {
             role: role
         })
         return response.data
     },
 
-    async delete(restaurant_id, user_id) {
+    async delete({restaurant_id, user_id}) {
         const response = await API.delete(`/responsable/restaurant/${restaurant_id}/${user_id}`)
         return response.data
     },

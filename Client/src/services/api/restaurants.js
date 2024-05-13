@@ -11,7 +11,7 @@ const Restaurants = {
         return response.data
     },
 
-    async create (name, description, address, email, capacity) {
+    async create ({name, description, address, email, capacity}) {
         const response = await API.post('/restaurant', {
             name: name,
             description: description,
@@ -22,7 +22,7 @@ const Restaurants = {
         return response.data
     },
 
-    async update (id, name, description, address, email, capacity) {
+    async update ({id, name, description, address, email, capacity}) {
         const response = await API.put(`/restaurant/${id}`, {
             name: name,
             description: description,

@@ -2,8 +2,8 @@ import React from 'react'
 
 const AdminRestaurants = () => {
     return (
-        <div>
-        <h1>Restaurants</h1>
+        <div className='flex-1 w-full'>
+            <h1>Restaurants</h1>
         </div>
     )
 }

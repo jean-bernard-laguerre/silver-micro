@@ -21,7 +21,7 @@ const Avis = {
         return response.data
     },
 
-    async create (restaurantId, rating, review) {
+    async create ({restaurantId, rating, review}) {
         const response = await API.post('/avis', {
             restaurantId: restaurantId,
             rating: rating,
@@ -30,7 +30,7 @@ const Avis = {
         return response.data
     },
 
-    async update (id, restaurant_id, rating, review) {
+    async update ({id, restaurant_id, rating, review}) {
         const response = await API.put(`/avis/${id}`, {
             restaurantId: restaurant_id,
             rating: rating,

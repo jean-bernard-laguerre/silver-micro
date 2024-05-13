@@ -1,6 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
 import AuthContext from './contexts/authContext'
 import './App.css'
 
@@ -8,17 +7,21 @@ import './App.css'
 import Home from './pages/home'
 import Login from './pages/login'
 import Register from './pages/register'
+import RegisterRestaurant from './pages/restaurant/register'
 import Reservations from './pages/reservations'
+import Restaurant from './pages/restaurant'
 import Profile from './pages/profile'
 import AdminRestaurants from './pages/admin/restaurants'
 import AdminRestaurant from './pages/admin/restaurant';
-import { Button } from './components/ui/button';
+import Header from './components/layout/header';
 
 const routes = [
   { path: '/', element: <Home/> },
   { path: '/login', element: <Login/> },
   { path: '/register', element: <Register/> },
+  { path: '/new-restaurant', element: <RegisterRestaurant/>},
   { path: '/reservations', element: <Reservations/> },
+  { path: '/restaurant/:id', element: <Restaurant/>},
   { path: '/profile', element: <Profile/> },
   { path: '/admin', element: <AdminRestaurants/> },
   { path: '/admin/restaurant/:id', element: <AdminRestaurant/> },
@@ -46,7 +49,7 @@ function App() {
   }, [])
 
   const connect = () => {
-    Auth.login("Dwight.Sauer74@hotmail.com", "test")
+    Auth.login({email:"Dwight.Sauer74@hotmail.com", password:"test"})
     .then(response => {
       localStorage.setItem('token', response.token)
       login(response.user)
@@ -61,6 +64,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={authValue}>
+      <Header/>
       <RouterProvider 
         router={router}
       />        

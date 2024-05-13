@@ -1,7 +1,10 @@
 import API from '../config'
 
 const Auth = {
-    async login (email, password) {
+    async login ({
+        email,
+        password
+    }) {
         const response = await API.post('/user/auth', {
             email: email,
             password: password
@@ -9,8 +12,12 @@ const Auth = {
         return response.data
     },
 
-    async register (username, email, password) {
-        const response = await API.post('/user', {
+    async register ({
+        username,
+        email,
+        password
+    }) {
+        const response = await API.post('/user/register', {
             username: username,
             email: email,
             password: password
