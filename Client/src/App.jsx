@@ -10,6 +10,7 @@ import Register from './pages/register'
 import RegisterRestaurant from './pages/restaurant/register'
 import Reservations from './pages/reservations'
 import Restaurant from './pages/restaurant'
+import RestaurantsList from './pages/restaurants';
 import Profile from './pages/profile'
 import AdminRestaurants from './pages/admin/restaurants'
 import AdminRestaurant from './pages/admin/restaurant';
@@ -22,6 +23,7 @@ const routes = [
   { path: '/new-restaurant', element: <RegisterRestaurant/>},
   { path: '/reservations', element: <Reservations/> },
   { path: '/restaurant/:id', element: <Restaurant/>},
+  { path: '/restaurants/:category?', element: <RestaurantsList/> },
   { path: '/profile', element: <Profile/> },
   { path: '/admin', element: <AdminRestaurants/> },
   { path: '/admin/restaurant/:id', element: <AdminRestaurant/> },
