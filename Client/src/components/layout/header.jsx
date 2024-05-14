@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Button } from '../ui/button.jsx'
 import { Menubar, MenubarTrigger, MenubarMenu } from '../ui/menubar.jsx'
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuContent, NavigationMenuTrigger, NavigationMenuLink } from '../ui/navigation-menu.jsx'
 import AuthContext from '@/contexts/authContext.jsx'
 
 const Header = () => {
@@ -23,6 +24,9 @@ const Header = () => {
                 <MenubarMenu >
                     <MenubarTrigger>
                         <Button variant="link" onClick={() => window.location.href = '/'}>Accueil</Button>
+                    </MenubarTrigger>
+                    <MenubarTrigger>
+                        <Button variant="link" onClick={() => window.location.href = '/restaurants'}>Restaurants</Button>
                     </MenubarTrigger>
                     { currentUser ? (
                         <>

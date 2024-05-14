@@ -11,6 +11,14 @@ const Restaurants = {
         return response.data
     },
 
+    async search (name, category) {
+        
+        const nameQuery = name ? `name=${name}` : ''
+        const categoryQuery = category ? `category=${category}` : ''
+        const response = await API.get(`/restaurant/search?${nameQuery}${(nameQuery !== '') ? '&' : ''}${categoryQuery}`)
+        return response.data
+    },
+
     async create ({name, description, address, email, capacity}) {
         const response = await API.post('/restaurant', {
             name: name,
