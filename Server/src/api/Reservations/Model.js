@@ -53,8 +53,8 @@ Reservation.init({
     modelName: 'Reservation',
 })
 
-Reservation.belongsTo(User);
-Reservation.belongsTo(Restaurant);
+Reservation.belongsTo(User, { onDelete: 'cascade' });
+Reservation.belongsTo(Restaurant, { onDelete: 'cascade' });
 
 User.hasMany(Reservation, { onDelete: 'cascade' });
 Restaurant.hasMany(Reservation, { onDelete: 'cascade' });

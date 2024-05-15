@@ -76,9 +76,9 @@ const createReservation = (req, res) => {
             return res.status(400).json({ error : 'You already have a reservation for this date and time' });
         }
 
-        checkAvailability(item).then(available => {
+        checkAvailability(item).then(status => {
 
-            if (!available) {
+            if (!status.available) {
                 return res.status(400).json({ error: 'Restaurant is not available for this date and time' });
             }
     
@@ -146,6 +146,52 @@ const deleteReservation = (req, res) => {
     });
 };
 
+const getAvailability = (req, res) => {
+
+    const slots = ['11:00', '12:00', '13:00', '14:00', '19:00', '20:00', '21:00', '22:00']
+
+    const date = req.body.date;
+    const restaurantId = req.params.restaurantId;
+    
+    Restaurant.findByPk(restaurantId).then(restaurant => {
+        if (!restaurant) {
+            return res.status(404).json({ error: 'Restaurant not found' });
+        }
+        
+        const promises = slots.map(slot => {
+            return checkAvailability({
+                RestaurantId: restaurantId,
+                date: date,
+                time: slot,
+                people: 0
+            }).then(status => {
+                console.log(status);
+                return {
+                    time: slot,
+                    available: status.available,
+                    totalPeople: status.totalPeople
+                };
+            });
+        });
+
+        Promise.all(promises).then(availableSlots => {
+            const availability = {};
+            availableSlots.forEach(slot => {
+                availability[slot.time] = {
+                    available: slot.available,
+                    totalPeople: slot.totalPeople
+                };
+            });
+
+            res.json({ 
+                date: date,
+                availabilty: availability
+            });
+        });
+    });
+};
+
+
 //function checking if the restaurant is available for the reservation date and time based on the restaurant capacity
 const checkAvailability = (item) => {
     return Restaurant.findByPk(item.RestaurantId).then(restaurant => {
@@ -159,7 +205,10 @@ const checkAvailability = (item) => {
             }
         }).then(reservations => {
             const totalPeople = reservations.reduce((acc, reservation) => acc + reservation.people, 0);
-            return totalPeople + item.people <= restaurant.capacity;
+            return {
+                available: (restaurant.capacity - totalPeople) >= item.people,
+                totalPeople: totalPeople,
+            }
         });
     });
 };
@@ -172,5 +221,6 @@ module.exports = {
     getReservationsByRestaurant,
     createReservation,
     updateReservation,
-    deleteReservation
+    deleteReservation,
+    getAvailability
 };

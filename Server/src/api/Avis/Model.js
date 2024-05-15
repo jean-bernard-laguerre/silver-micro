@@ -32,8 +32,8 @@ Avis.init({
     modelName: 'Avis',
 })
 
-Avis.belongsTo(Restaurant)
-Avis.belongsTo(User)
+Avis.belongsTo(Restaurant, {onDelete: 'cascade'})
+Avis.belongsTo(User, {onDelete: 'cascade'})
 
 User.hasMany(Avis, {onDelete: 'cascade' })
 Restaurant.hasMany(Avis, {onDelete: 'cascade' })

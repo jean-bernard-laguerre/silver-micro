@@ -24,8 +24,8 @@ Responsable.init({
     modelName: 'Responsable'
 })
 
-Responsable.belongsTo(User);
-Responsable.belongsTo(Restaurant);
+Responsable.belongsTo(User, { onDelete: 'cascade' });
+Responsable.belongsTo(Restaurant, { onDelete: 'cascade' });
 
 User.hasMany(Responsable, { onDelete: 'cascade' });
 Restaurant.hasMany(Responsable, { onDelete: 'cascade' });

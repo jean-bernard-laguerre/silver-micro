@@ -28,6 +28,10 @@ const deleteReservation = (req, res) => {
     services.deleteReservation(req, res);
 }
 
+const getAvailability = (req, res) => {
+    services.getAvailability(req, res);
+}
+
 module.exports = {
     getReservations,
     getReservation,
@@ -35,5 +39,6 @@ module.exports = {
     getReservationsByRestaurant,
     createReservation,
     updateReservation,
-    deleteReservation
+    deleteReservation,
+    getAvailability
 };
