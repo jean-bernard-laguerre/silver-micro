@@ -36,7 +36,6 @@ const Login = () => {
             if (!response.success) {
                 setResponseMessage(response.message)
             } else {
-                console.log(response)
                 localStorage.setItem('silvermicro_token', response.token)
                 login(response.user)
                 window.location.href = '/'

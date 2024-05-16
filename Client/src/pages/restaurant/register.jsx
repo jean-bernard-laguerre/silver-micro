@@ -37,7 +37,7 @@ const RegisterRestaurant = () => {
             if (!response.success) {
                 setErrorMessage(response.error)
             } else {
-                window.location.href = '/'
+                window.location.href = '/admin'
             }
         })
     }

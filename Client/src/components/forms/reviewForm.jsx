@@ -11,28 +11,36 @@ import Avis from '@/services/api/avis'
 
 const formSchema = z.object({
     rating: z.coerce.number().min(1, 'Please select a rating').max(5, 'Please select a rating between 1 and 5'),
-    review: z.string().min(1, 'Please enter a comment')
+    review: z.string().min(1, 'Please enter a comment').optional()
 })
 
-const ReviewForm = ({ restaurantId, update }) => {
+const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
 
     const reviewForm = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             rating: 1,
-            review: ''
         }
     })
 
     const onSubmit = (data) => {
         data.restaurantId = restaurantId
-        Avis.create(data).then((response) => {
-            console.log(response)
-            if (response.avis) {
-                update()
-                reviewForm.reset()
-            }
-        })
+        if (reviewed) {
+            data.id = commentId
+            Avis.update(data).then((response) => {
+                if (response.avis) {
+                    update()
+                    reviewForm.reset()
+                }
+            })
+        } else {
+            Avis.create(data).then((response) => {
+                if (response.avis) {
+                    update()
+                    reviewForm.reset()
+                }
+            })
+        }
     }
 
     return (
@@ -71,7 +79,7 @@ const ReviewForm = ({ restaurantId, update }) => {
                     )}
                 />
                 <Button type='submit'>
-                    Commenter
+                    {reviewed ? 'Modifier' : 'Ajouter'}
                 </Button>
             </form>
         </Form>
