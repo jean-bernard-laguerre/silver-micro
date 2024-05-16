@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Restaurants from '@/services/api/restaurants'
-import Avis from '@/services/api/avis'
+
 import { Button } from '@/components/ui/button'
 
 import useModal from '@/hooks/useModal'
 import Modal from '@/components/layout/modal.jsx'
 import Reservations from '@/services/api/reservations.js'
-import ReservationForm from './formulaire_reservations.jsx'
+import ReservationForm from '../components/forms/reservationForm.jsx'
+import Restaurants from '@/services/api/restaurants'
+import Avis from '@/services/api/avis'
+import ReviewForm from '@/components/forms/reviewForm.jsx'
+
 
 const Restaurant = () => {
 
@@ -19,24 +22,32 @@ const Restaurant = () => {
     const [availability, setAvailability] = useState()
     const modal = useModal()
 
-    useEffect(() => {
-        Restaurants.getOne(id).then((response) => {
-            setRestaurant(response.restaurant)
-            setLoadingRestaurant(false)
-        })
-    } , [id])
-
-    useEffect(() => {
+    const fetchAvis = () => {
+        setLoadingAvis(true)
         Avis.getByRestaurant(id).then((response) => {
             setAvis(response.avis)
             setLoadingAvis(false)
         })
-    }, [id])
+    }
 
-    useEffect(() => {
+    const fetchRestaurant = () => {
+        setLoadingRestaurant(true)
+        Restaurants.getOne(id).then((response) => {
+            setRestaurant(response.restaurant)
+            setLoadingRestaurant(false)
+        })
+    }
+
+    const fetchAvailability = () => {
         Reservations.getAvailability(id, new Date().toISOString().split('T')[0]).then((response) => {
             setAvailability(response.availability)
         })
+    }
+
+    useEffect(() => {
+        fetchAvis()
+        fetchRestaurant()
+        fetchAvailability()
     }, [id])
     
 
@@ -67,6 +78,10 @@ const Restaurant = () => {
                 {loadingAvis && (
                     <div>Loading...</div>
                 )}
+                {/* 
+                    Form to add a review
+                */}
+                <ReviewForm restaurantId={id} update={fetchAvis} />
                 {!!avis && (
                     <div>
                         <h2 className='text-2xl font-bold'>Avis</h2>
