@@ -2,6 +2,8 @@ import React, { useContext } from 'react'
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form.jsx'
 import { Button } from '@/components/ui/button.jsx'
+import Modal from '@/components/layout/modal'
+import useModal from '@/hooks/useModal'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,6 +20,7 @@ const formSchema = z.object({
 
 const Profile = () => { 
 
+    const controls = useModal()
     const profile = useContext(AuthContext)
     const profileForm = useForm({
         resolver: zodResolver(formSchema),
@@ -41,55 +44,58 @@ const Profile = () => {
             <div className='w-full' id='profile'>
                 <p>Username: {profile.currentUser?.username}</p>
                 <p>Email: {profile.currentUser?.email}</p>
+                <Button onClick={controls.open}>Modifier</Button>
             </div>
-
-            <Form {...profileForm}>
-                <form onSubmit={profileForm.handleSubmit(onSubmit)}>
-                    <FormField
-                        name='username'
-                        label='Username'
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Username</FormLabel>
-                                <FormControl>
-                                    <input {...field} className='p-2 border border-gray-300 rounded' />
-                                </FormControl>
-                                <FormMessage>{profileForm.formState.errors.username?.message}</FormMessage>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        name='email'
-                        label='Email'
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <input {...field} className='p-2 border border-gray-300 rounded' />
-                                </FormControl>
-                                <FormMessage>{profileForm.formState.errors.email?.message}</FormMessage>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        name='password'
-                        label='Password'
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <input {...field} type='password' className='p-2 border border-gray-300 rounded' />
-                                </FormControl>
-                                <FormMessage>{profileForm.formState.errors.password?.message}</FormMessage>
-                            </FormItem>
-                        )}
-                    />
-                    <Button type='submit'>
-                        Mettre à jour
-                    </Button>
-                </form>
-            </Form>
-
+            <Modal
+                controls={controls}
+            >
+                <Form {...profileForm}>
+                    <form onSubmit={profileForm.handleSubmit(onSubmit)}>
+                        <FormField
+                            name='username'
+                            label='Username'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username</FormLabel>
+                                    <FormControl>
+                                        <input {...field} className='p-2 border border-gray-300 rounded' />
+                                    </FormControl>
+                                    <FormMessage>{profileForm.formState.errors.username?.message}</FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name='email'
+                            label='Email'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <input {...field} className='p-2 border border-gray-300 rounded' />
+                                    </FormControl>
+                                    <FormMessage>{profileForm.formState.errors.email?.message}</FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name='password'
+                            label='Password'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <input {...field} type='password' className='p-2 border border-gray-300 rounded' />
+                                    </FormControl>
+                                    <FormMessage>{profileForm.formState.errors.password?.message}</FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <Button type='submit'>
+                            Mettre à jour
+                        </Button>
+                    </form>
+                </Form>
+            </Modal>
         </div>
     )
 }

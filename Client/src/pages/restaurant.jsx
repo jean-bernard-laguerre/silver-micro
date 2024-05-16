@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -10,16 +10,20 @@ import ReservationForm from '../components/forms/reservationForm.jsx'
 import Restaurants from '@/services/api/restaurants'
 import Avis from '@/services/api/avis'
 import ReviewForm from '@/components/forms/reviewForm.jsx'
+import AuthContext from '@/contexts/authContext.jsx'
 
 
 const Restaurant = () => {
 
     const { id } = useParams()
+    const profile = useContext(AuthContext)
     const [restaurant, setRestaurant] = useState(null)
     const [avis, setAvis] = useState([])
     const [loadingRestaurant, setLoadingRestaurant] = useState(true)
     const [loadingAvis, setLoadingAvis] = useState(true)
     const [availability, setAvailability] = useState()
+    const [reviewed, setReviewed] = useState(false)
+    const [userCommentId, setUserCommentId] = useState(null)
     const modal = useModal()
 
     const fetchAvis = () => {
@@ -28,6 +32,16 @@ const Restaurant = () => {
             setAvis(response.avis)
             setLoadingAvis(false)
         })
+    }
+
+    const isReviewed = () => {
+        if (profile.currentUser) {
+            const userComment = avis.find((avi) => avi.UserId === profile.currentUser.id)
+            if (userComment) {
+                setReviewed(true)
+                setUserCommentId(userComment.id)
+            }
+        }
     }
 
     const fetchRestaurant = () => {
@@ -49,6 +63,10 @@ const Restaurant = () => {
         fetchRestaurant()
         fetchAvailability()
     }, [id])
+
+    useEffect(() => {
+        isReviewed()
+    }, [avis])
     
 
     return (
@@ -81,13 +99,16 @@ const Restaurant = () => {
                 {/* 
                     Form to add a review
                 */}
-                <ReviewForm restaurantId={id} update={fetchAvis} />
+                <ReviewForm restaurantId={id} update={fetchAvis} reviewed={reviewed} commentId={userCommentId} />
                 {!!avis && (
                     <div>
                         <h2 className='text-2xl font-bold'>Avis</h2>
                         {avis.map((avi) => (
                             <div key={avi.id}>
-                                <p>{new Date(avi.createdAt).toLocaleDateString()}</p>
+                                <p><span className='
+                                    font-bold
+                                    text-blue-500
+                                '>{avi.User.username}</span>: {new Date(avi.createdAt).toLocaleDateString()}</p>
                                 <p>{avi.review}</p>
                                 <p>{avi.rating}</p>
                             </div>
@@ -98,7 +119,7 @@ const Restaurant = () => {
             <Modal
                 controls={modal}
             >
-                <ReservationForm restaurantId={id} />
+                <ReservationForm restaurantId={id} controls={modal} />
             </Modal>
         </div>
     )

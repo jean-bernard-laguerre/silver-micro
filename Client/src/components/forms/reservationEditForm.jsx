@@ -10,39 +10,36 @@ import ReservationAPI from '@/services/api/reservations'; // Assuming this is th
 
 
 const formSchema = z.object({
-    date: z.string().min(1, "Please select a date."),
-    time: z.string().min(1, "Please select a time."),
-    people: z.coerce.number().min(1, "Select at least one person.")
+    date: z.string().min(1, "Please select a date.").optional(),
+    time: z.string().min(1, "Please select a time.").optional(),
+    people: z.coerce.number().min(1, "Select at least one person.").optional()
 });
 
-const ReservationForm = ({restaurantId, controls}) => {
+const ReservationEditForm = ({restaurantId, controls, reservation, update}) => {
     const [responseMessage, setResponseMessage] = useState('');
     const [availability, setAvailability] = useState();
 
     const reservationForm = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            date: '',
-            time: '',
-            people: 1
+            date: reservation.date,
+            time: reservation.time,
+            people: reservation.people
         }
     });
 
     const onSubmit = (data) => {
         data.restaurant_id = restaurantId;
-        ReservationAPI.create(data)
-            .then(response => {
-                if (!response.reservation) {
-                    setResponseMessage(response.message);
-                } else {
-                    alert('Reservation successful!');
-                    controls.close();
-                }
-            })
-            .catch(error => {
-                console.error('Reservation failed:', error);
-                setResponseMessage('Failed to make a reservation. Please try again.');
-            });
+        data.id = reservation.id;
+        ReservationAPI.update(data).then(response => {
+            if (!response.reservation) {
+                setResponseMessage(response.message);
+            } else {
+                alert('Mise à jour réussie!');
+                update();
+                controls.close();
+            }
+        })
     };
 
     useEffect(() => {
@@ -134,7 +131,9 @@ const ReservationForm = ({restaurantId, controls}) => {
                     <Button
                         type="submit"
                         disabled={reservationForm.formState.isSubmitting}
-                    >Reserver</Button>
+                    >
+                        Mettre à jour
+                    </Button>
                     {responseMessage && <p className="text-red-500">{responseMessage}</p>}
                 </form>
             </Form>
@@ -142,4 +141,4 @@ const ReservationForm = ({restaurantId, controls}) => {
     );
 };
 
-export default ReservationForm;
+export default ReservationEditForm;

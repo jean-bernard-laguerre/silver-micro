@@ -29,20 +29,33 @@ const AvisService = {
 
   getAvisByRestaurant: async (req, res) => {
 
-    Restaurant.findByPk(req.params.restaurantId).then(restaurant => {
+    Restaurant.findByPk(req.params.restaurantId, {}).then(restaurant => {
       if (!restaurant) {
         return res.status(404).json({ error: "Restaurant not found" });
       }
     });
 
-    Avis.findAll({ where: { restaurantId: req.params.restaurantId } }).then(avis => {
+    Avis.findAll({ 
+      where: { restaurantId: req.params.restaurantId },
+      include: [
+        { model: User, 
+          attributes: ['username'] }
+      ],
+      group: []
+    }).then(avis => {
       res.json({ avis });
     });
   },
 
   // obtenir tous les avis
   getAllAvis: async (req, res) => {
-    Avis.findAll().then(avis => {
+    Avis.findAll({
+      include: [
+        { model: User, 
+          attributes: ['username'] }
+      ],
+      group: []
+    }).then(avis => {
       res.json({ avis });
     });
   },

@@ -21,7 +21,6 @@ const authMiddleware = (allowedRole = "any") => {
             if (err) {
                 return res.status(403).json({ message: 'Invalid Token' });
             }
-
             // if allowedRole is not any, check if the user role is allowed
             if (allowedRole !== "any" && user.role !== allowedRole) {
                 return res.status(403).json({ message: 'Unauthorized' });

@@ -75,8 +75,6 @@ const createReservation = (req, res) => {
         people: req.body.people
     };
 
-    console.log(item);
-
     // check if the user already has a reservation for the same date and time
     Reservation.findAll({
         where: {
@@ -116,7 +114,7 @@ const createReservation = (req, res) => {
 const updateReservation = (req, res) => {
 
     const item = {
-        UserId: req.body.userId,
+        UserId: req.user.id,
         RestaurantId: req.body.restaurantId,
         date: req.body.date,
         time: req.body.time,
@@ -180,7 +178,6 @@ const getAvailability = (req, res) => {
                 time: slot,
                 people: 0
             }).then(status => {
-                console.log(status);
                 return {
                     time: slot,
                     available: status.available,
