@@ -10,6 +10,7 @@ reservationRouter.get("/" , reservationController.getReservations);
 reservationRouter.get("/:id" , reservationController.getReservation);
 reservationRouter.get("/user/:userId" , reservationController.getReservationsByUser);
 reservationRouter.get("/restaurant/:restaurantId", authMiddleware(), adminMiddleware(), reservationController.getReservationsByRestaurant);
+reservationRouter.post("/availability/:restaurantId" , reservationController.getAvailability);
 reservationRouter.post("/" , authMiddleware(), reservationController.createReservation);
 reservationRouter.put("/:id" , authMiddleware(), reservationController.updateReservation);
 reservationRouter.delete("/:id" , authMiddleware(), reservationController.deleteReservation);

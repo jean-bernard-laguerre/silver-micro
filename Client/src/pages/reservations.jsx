@@ -22,9 +22,9 @@ const Reservations = () => {
                 )}
                 {reservations.map((reservation) => (
                     <div key={reservation.id} className='flex flex-col'>
-                        <h2 className='text-2xl font-bold'>Restaurant: {reservation.restaurant.name}</h2>
-                        <p className='text-gray-500'>Date: {reservation.date} à {reservation.time}</p>
-                        <p className='text-gray-500'>Nombre de personnes: {reservation.people}</p>
+                        <h2 className='text-2xl font-bold'>Restaurant: {reservation?.Restaurant.name}</h2>
+                        <p className='text-gray-500'>Date: {reservation?.date} à {reservation?.time}</p>
+                        <p className='text-gray-500'>Nombre de personnes: {reservation?.people}</p>
                     </div>
                 ))}
             </div>

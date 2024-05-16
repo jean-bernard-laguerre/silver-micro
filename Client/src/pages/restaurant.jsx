@@ -4,6 +4,11 @@ import Restaurants from '@/services/api/restaurants'
 import Avis from '@/services/api/avis'
 import { Button } from '@/components/ui/button'
 
+import useModal from '@/hooks/useModal'
+import Modal from '@/components/layout/modal.jsx'
+import Reservations from '@/services/api/reservations.js'
+import ReservationForm from './formulaire_reservations.jsx'
+
 const Restaurant = () => {
 
     const { id } = useParams()
@@ -11,6 +16,8 @@ const Restaurant = () => {
     const [avis, setAvis] = useState([])
     const [loadingRestaurant, setLoadingRestaurant] = useState(true)
     const [loadingAvis, setLoadingAvis] = useState(true)
+    const [availability, setAvailability] = useState()
+    const modal = useModal()
 
     useEffect(() => {
         Restaurants.getOne(id).then((response) => {
@@ -23,6 +30,12 @@ const Restaurant = () => {
         Avis.getByRestaurant(id).then((response) => {
             setAvis(response.avis)
             setLoadingAvis(false)
+        })
+    }, [id])
+
+    useEffect(() => {
+        Reservations.getAvailability(id, new Date().toISOString().split('T')[0]).then((response) => {
+            setAvailability(response.availability)
         })
     }, [id])
     
@@ -42,7 +55,8 @@ const Restaurant = () => {
                         <p className='text-gray-500'>Capacity: {restaurant.capacity}</p>
                         <p className='text-gray-500'>Rating: {restaurant.averageRating}</p>
                         <Button
-                            
+                            onClick={modal.open}
+                            variant='primary'
                         >
                             Réserver
                         </Button>
@@ -66,6 +80,11 @@ const Restaurant = () => {
                     </div>
                 )}
             </div>
+            <Modal
+                controls={modal}
+            >
+                <ReservationForm restaurantId={id} />
+            </Modal>
         </div>
     )
 }
