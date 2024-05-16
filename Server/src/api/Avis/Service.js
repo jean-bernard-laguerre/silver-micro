@@ -62,7 +62,7 @@ const AvisService = {
       UserId: item.UserId, 
       RestaurantId: item.RestaurantId } }).then(avis => {
       if (avis.length > 0) {
-        return res.status(404).json({ error: "Review already exist" });
+        return res.status(400).json({ error: "Review already exist" });
       }
 
       Avis.build(item).validate().then(() => {
