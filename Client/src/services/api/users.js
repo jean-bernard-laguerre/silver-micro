@@ -11,7 +11,7 @@ const Users = {
         return response.data
     },
 
-    async update(id, username, email, password) {
+    async update({id, username, email, password}) {
         const response = await API.put(`/user/${id}`, {
             username: username,
             email: email,

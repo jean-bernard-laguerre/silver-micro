@@ -80,7 +80,8 @@ const authentication = (req, res) => {
                         user: {
                             id: user.id,
                             role: user.role,
-                            username: user.username},
+                            username: user.username,
+                            email: user.email},
                         token: auth.generateToken(user)
                     });
             return true;
@@ -117,7 +118,12 @@ const updateUser = (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
         user.update(item).then(user => {
-            res.json({ user });
+            res.json({ user : {
+                id: user.id,
+                role: user.role,
+                username: user.username,
+                email: user.email} 
+            });
         }).catch(error => {
             res.status(400).json({ error: error.errors[0].message });
         });
