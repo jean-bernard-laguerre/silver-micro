@@ -21,9 +21,16 @@ const Reservations = {
         return response.data
     },
 
+    async getAvailability(restaurant_id, date) {
+        const response = await API.post(`/reservation/availability/${restaurant_id}`, {
+            date: date,
+        })
+        return response.data
+    },
+
     async create({restaurant_id, date, time, people}) {
-        const response = await API.post('/reservation', {
-            restaurant_id: restaurant_id,
+        const response = await API.post(`/reservation`, {
+            restaurantId: restaurant_id,
             date: date,
             time: time,
             people: people,

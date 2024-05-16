@@ -18,7 +18,13 @@ const getReservations = (req, res) => {
  * @param {Object} res
  */
 const getReservation = (req, res) => {
-    Reservation.findByPk(req.params.id).then(reservation => {
+    Reservation.findByPk(req.params.id, {
+        include: [{
+            model: Restaurant,
+            attributes: ['name', 'address']
+        }],
+        group: ['Restaurant.id'],
+    }).then(reservation => {
         if (!reservation) {
             return res.status(404).json({ error: "Reservation not found" });
         }
@@ -32,7 +38,14 @@ const getReservation = (req, res) => {
  * @param {Object} res
  */
 const getReservationsByUser = (req, res) => {
-    Reservation.findAll({ where: { userId: req.params.userId } }).then(reservations => {
+    Reservation.findAll({ 
+        where: { userId: req.params.userId },
+        include: [{
+            model: Restaurant,
+            attributes: ['name', 'address']
+        }],
+        group: [],
+    }).then(reservations => {
         res.json({ reservations });
     });
 };
@@ -61,6 +74,8 @@ const createReservation = (req, res) => {
         time: req.body.time,
         people: req.body.people
     };
+
+    console.log(item);
 
     // check if the user already has a reservation for the same date and time
     Reservation.findAll({
@@ -185,7 +200,7 @@ const getAvailability = (req, res) => {
 
             res.json({ 
                 date: date,
-                availabilty: availability
+                availability: availability
             });
         });
     });
