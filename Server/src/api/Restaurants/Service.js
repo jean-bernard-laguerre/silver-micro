@@ -26,8 +26,8 @@ const getRestaurants = (req, res) => {
             }],
             attributes: {
                 include: [
-                    [Sequelize.fn('AVG', Sequelize.col('avis.rating')), 'averageRating'],
-                    [Sequelize.fn('COUNT', Sequelize.col('avis.id')), 'nbAvis']
+                    [Sequelize.fn('AVG', Sequelize.col('Avis.rating')), 'averageRating'],
+                    [Sequelize.fn('COUNT', Sequelize.col('Avis.id')), 'nbAvis']
                 ]
             },
             group: ['Restaurant.id']
@@ -58,8 +58,8 @@ const getRestaurant = (req, res) => {
         }],
         attributes: {
             include: [
-                [Sequelize.fn('AVG', Sequelize.col('avis.rating')), 'averageRating'],
-                [Sequelize.fn('COUNT', Sequelize.col('avis.id')), 'nbAvis']
+                [Sequelize.fn('AVG', Sequelize.col('Avis.rating')), 'averageRating'],
+                [Sequelize.fn('COUNT', Sequelize.col('Avis.id')), 'nbAvis']
             ]
         }
     }).then(restaurant => {

@@ -11,6 +11,7 @@ import Restaurants from '@/services/api/restaurants'
 import Avis from '@/services/api/avis'
 import ReviewForm from '@/components/forms/reviewForm.jsx'
 import AuthContext from '@/contexts/authContext.jsx'
+import Comment from '@/components/layout/Avis.jsx'
 
 
 const Restaurant = () => {
@@ -102,18 +103,13 @@ const Restaurant = () => {
                 <ReviewForm restaurantId={id} update={fetchAvis} reviewed={reviewed} commentId={userCommentId} />
                 {!!avis && (
                     <div>
-                        <h2 className='text-2xl font-bold'>Avis</h2>
-                        {avis.map((avi) => (
-                            <div key={avi.id}>
-                                <p><span className='
-                                    font-bold
-                                    text-blue-500
-                                '>{avi.User.username}</span>: {new Date(avi.createdAt).toLocaleDateString()}</p>
-                                <p>{avi.review}</p>
-                                <p>{avi.rating}</p>
-                            </div>
-                        ))}
-                    </div>
+                <h2 className='text-2xl font-bold'>Avis</h2>
+                <div className="border p-4 rounded-md bg-gray-100">
+                    {avis.map((avi) => (
+                        <Comment avi={avi}/>
+                    ))}
+                </div>
+            </div>
                 )}
             </div>
             <Modal
