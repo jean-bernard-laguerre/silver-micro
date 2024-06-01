@@ -15,6 +15,7 @@ import Profile from './pages/profile'
 import AdminRestaurants from './pages/admin/restaurants'
 import AdminRestaurant from './pages/admin/restaurant';
 import Header from './components/layout/header';
+import Footer from './components/layout/footer';
 
 const routes = [
   { path: '/', element: <Home/> },
@@ -69,7 +70,8 @@ function App() {
       <Header/>
       <RouterProvider 
         router={router}
-      />        
+      />
+      <Footer/>        
     </AuthContext.Provider>
   )
 }

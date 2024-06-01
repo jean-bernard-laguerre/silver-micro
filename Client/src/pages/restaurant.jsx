@@ -70,7 +70,7 @@ const Restaurant = () => {
     
 
     return (
-        <div className="flex flex-col w-full p-4">
+        <div className="flex-1 flex flex-col w-full p-4">
             <div className='flex-1 w-full'>
                 {loadingRestaurant && (
                     <div>Loading...</div>
