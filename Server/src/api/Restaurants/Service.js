@@ -129,7 +129,8 @@ const createRestaurant = (req, res) => {
         address: req.body.address,
         email: req.body.email,
         description: req.body.description,
-        capacity: req.body.capacity
+        capacity: req.body.capacity,
+        category: req.body.category
     };
 
     Restaurant.build(item).validate().then(() => {
@@ -165,7 +166,8 @@ const updateRestaurant = (req, res) => {
         address: req.body.address,
         email: req.body.email,
         description: req.body.description,
-        capacity: req.body.capacity
+        capacity: req.body.capacity,
+        category: req.body.category
     };
 
     if (isNaN(req.params.restaurantId)) {

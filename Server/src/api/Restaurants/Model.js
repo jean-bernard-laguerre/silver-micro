@@ -1,6 +1,8 @@
 const { DataTypes, Model } = require('sequelize');
 const db = require('../../database');
 
+const categories = process.env.CATEGORIES.split(',');
+
 class Restaurant extends Model { }
 
 Restaurant.init({
@@ -19,8 +21,15 @@ Restaurant.init({
         allowNull: true
     },
     category: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.ENUM,
+        values: categories,
+        allowNull: false,
+        validate: {
+            isIn: {
+                args: [categories],
+                msg: `Category must be one of: ${categories.join(', ')}`
+            }
+        }
     },
     address: {
         type: DataTypes.STRING,

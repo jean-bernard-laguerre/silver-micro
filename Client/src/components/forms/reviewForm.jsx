@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button.jsx'
@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import z from 'zod'
 
 import Avis from '@/services/api/avis'
+import AuthContext from '@/contexts/authContext'
 
 const formSchema = z.object({
     rating: z.coerce.number().min(1, 'Please select a rating').max(5, 'Please select a rating between 1 and 5'),
@@ -15,6 +16,8 @@ const formSchema = z.object({
 })
 
 const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
+
+    const profile = useContext(AuthContext)
 
     const reviewForm = useForm({
         resolver: zodResolver(formSchema),
@@ -44,45 +47,53 @@ const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
     }
 
     return (
-        <Form {...reviewForm}>
-            <form onSubmit={reviewForm.handleSubmit(onSubmit)}>
-                <FormField 
-                    name='rating'
-                    label='Note'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Note</FormLabel>
-                            <FormControl>
-                                <select {...field} className='p-2 border border-gray-300 rounded'>
-                                    <option value='1'>1</option>
-                                    <option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                </select>
-                            </FormControl>
-                            <FormMessage>{reviewForm.formState.errors.rating?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    name='review'
-                    label='Commentaire'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Commentaire</FormLabel>
-                            <FormControl>
-                                <textarea {...field} className='p-2 border border-gray-300 rounded' />
-                            </FormControl>
-                            <FormMessage>{reviewForm.formState.errors.review?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-                <Button type='submit'>
-                    {reviewed ? 'Modifier' : 'Ajouter'}
-                </Button>
-            </form>
-        </Form>
+        <>
+            { profile.currentUser ? (
+                <Form {...reviewForm}>
+                    <form onSubmit={reviewForm.handleSubmit(onSubmit)}>
+                        <FormField 
+                            name='rating'
+                            label='Note'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Note</FormLabel>
+                                    <FormControl>
+                                        <select {...field} className='p-2 border border-gray-300 rounded'>
+                                            <option value='1'>1</option>
+                                            <option value='2'>2</option>
+                                            <option value='3'>3</option>
+                                            <option value='4'>4</option>
+                                            <option value='5'>5</option>
+                                        </select>
+                                    </FormControl>
+                                    <FormMessage>{reviewForm.formState.errors.rating?.message}</FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name='review'
+                            label='Commentaire'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Commentaire</FormLabel>
+                                    <FormControl>
+                                        <textarea {...field} className='p-2 border border-gray-300 rounded' />
+                                    </FormControl>
+                                    <FormMessage>{reviewForm.formState.errors.review?.message}</FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <Button type='submit'>
+                            {reviewed ? 'Modifier' : 'Ajouter'}
+                        </Button>
+                    </form>
+                </Form>) : (
+                <div className='text-center'>
+                    <p>Connectez-vous pour laisser un commentaire</p>
+                </div>
+            )}
+        </>
+        
     )
 }
 
