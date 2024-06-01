@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Restaurants from '@/services/api/restaurants'
 import { useParams } from 'react-router-dom'
+import { categories } from '@/services/variables'
 
 const RestaurantsList = () => {
 
@@ -36,12 +37,9 @@ const RestaurantsList = () => {
                     className='p-2 border border-gray-300 rounded'
                 >
                     <option value=''>Toutes les catégories</option>
-                    <option value='fast-food'>Fast Food</option>
-                    <option value='italian'>Italien</option>
-                    <option value='japanese'>Japonais</option>
-                    <option value='chinese'>Chinois</option>
-                    <option value='french'>Français</option>
-                    <option value='american'>Américain</option>
+                    {categories.map((category) => (
+                        <option key={category} value={category}>{category}</option>
+                    ))}
                 </select>
             </div>
             {loading && (

@@ -5,12 +5,21 @@ import { useParams } from 'react-router-dom'
 import Responsables from '@/services/api/responsables'
 import Restaurants from '@/services/api/restaurants'
 import Reservations from '@/services/api/reservations'
+import Avis from '@/services/api/avis'
 
 import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs'
+import TeamTable from '@/components/admin/teamTable'
+import RestaurantDashboard from '@/components/admin/restaurantDashboard'
+import ReservationDashboard from '@/components/admin/reservationDashboard'
+import Modal from '@/components/layout/modal'
+import useModal from '@/hooks/useModal'
+import RestaurantEdit from '@/components/forms/restaurantEdit'
+import { Button } from '@/components/ui/button'
 
 
 const AdminRestaurant = () => {
 
+    const modal = useModal()
     const { currentUser } = useContext(AuthContext)
     const { id } = useParams()
 
@@ -26,13 +35,18 @@ const AdminRestaurant = () => {
     const [reservations, setReservations] = useState()
     const [availability, setAvailability] = useState()
     const [loadingReservations, setLoadingReservations] = useState(true)
-    
+    const [avis, setAvis] = useState()
+    const [loadingAvis, setLoadingAvis] = useState(true)
 
-    useEffect(() => {
+    const getRestaurant = () => {
         Restaurants.getOne(id).then((response) => {
             setRestaurant(response.restaurant)
             setLoadingRestaurant(false)
         })
+    }
+
+    useEffect(() => {
+        getRestaurant()
     }, [id])
 
     useEffect(() => {
@@ -48,6 +62,19 @@ const AdminRestaurant = () => {
         })
     }, [date, id])
 
+    useEffect(() => {
+        Avis.getByRestaurant(id).then((response) => {
+            setAvis(response.avis)
+            setLoadingAvis(false)
+        })
+    }, [id])
+
+    const deleteTeamMember = (id) => {
+        Responsables.delete(id).then(() => {
+            setTeam(team.filter((member) => member.id !== id))
+        })
+    }
+
     return (
         <div className='flex-1 w-full p-3'>
             <Tabs
@@ -60,15 +87,27 @@ const AdminRestaurant = () => {
                     <TabsTrigger value='Book'>Reservations</TabsTrigger>
                 </TabsList>
                 <TabsContent value='Info'>
-                    <h1>{restaurant?.name}</h1>
+                    <RestaurantDashboard 
+                        restaurant={restaurant}
+                        avis={avis}
+                    />
+                    <Button onClick={modal.open}>Modifier</Button>
                 </TabsContent>
                 <TabsContent value='Team'>
-
+                    <TeamTable team={team} />
                 </TabsContent>
                 <TabsContent value='Book'>
-                    <input type="date" onChange={(e) => setDate(e.target.value)} />
+                    <ReservationDashboard setDate={setDate} />
                 </TabsContent>
             </Tabs>
+            <Modal
+                controls={modal}
+            >
+                <RestaurantEdit
+                    restaurant={restaurant}
+                    update={getRestaurant}
+                />
+            </Modal>
         </div>
     )
 }

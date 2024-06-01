@@ -8,6 +8,7 @@ import  { useForm, useController } from 'react-hook-form'
 import z from 'zod'
 
 import Restaurants from '@/services/api/restaurants'
+import { categories } from '@/services/variables'
 
 const formSchema = z.object({
     name: z.string().min(3, 'Name must be at least 3 characters long'),
@@ -15,6 +16,7 @@ const formSchema = z.object({
     address: z.string().min(10, 'Address must be at least 10 characters long'),
     email: z.string().email('Please enter a valid email address'),
     capacity: z.coerce.number().int().positive('Capacity must be a positive number'),
+    category: z.enum(categories)
 })
 
 const RegisterRestaurant = () => {
@@ -27,7 +29,8 @@ const RegisterRestaurant = () => {
             description: '',
             address: '',
             email: '',
-            capacity: 0
+            capacity: 0,
+            category: ''
         }
     })
 
@@ -89,6 +92,20 @@ const RegisterRestaurant = () => {
                             <FormLabel htmlFor={field.name}>Capacité</FormLabel>
                             <FormControl>
                                 <input {...field} type="number" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </FormControl>
+                            <FormMessage>{fieldState.error?.message}</FormMessage>
+                        </FormItem>
+                    )} />
+                    <FormField name="category" label="Category" render={({ field, fieldState }) => (
+                        <FormItem>
+                            <FormLabel htmlFor={field.name}>Catégorie</FormLabel>
+                            <FormControl>
+                                <select {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <option value="">Choisissez une catégorie</option>
+                                    {categories.map(category => (
+                                        <option key={category} value={category}>{category}</option>
+                                    ))}
+                                </select>
                             </FormControl>
                             <FormMessage>{fieldState.error?.message}</FormMessage>
                         </FormItem>

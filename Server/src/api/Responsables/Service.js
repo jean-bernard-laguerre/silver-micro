@@ -25,7 +25,7 @@ const getResponsables = (req, res) => {
  */
 const getResponsablesByUser = (req, res) => {
     Responsable.findAll({ 
-        where: { userId: req.params.userId },
+        where: { UserId: req.params.userId },
         include: [{
             model: Restaurant,
             // get average rating of restaurant from avis
@@ -37,7 +37,8 @@ const getResponsablesByUser = (req, res) => {
                 required: false
             }],
             group: ['Restaurant.id'],
-        }]
+        }],
+        group: ['Restaurant.id']
     }).then(responsables => {
         if (!responsables) {
             return res.status(404).json({ error: "Responsable not found" });
