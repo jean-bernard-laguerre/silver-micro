@@ -53,7 +53,7 @@ const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
             { profile.currentUser ? (
                 <Form {...reviewForm}>
                     <form 
-                        className='flex flex-col space-y-4 p-3 border border-gray-300 rounded-md bg-white shadow-md'
+                        className='flex flex-col space-y-4 p-3 mt-2 mb-5 border border-gray-300 bg-theme3 shadow-md'
                         onSubmit={reviewForm.handleSubmit(onSubmit)}>
                         <FormField 
                             name='rating'
@@ -62,7 +62,7 @@ const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
                                 <FormItem>
                                     <FormLabel>Note</FormLabel>
                                     <FormControl>
-                                        <select {...field} className='p-2 border border-gray-300 rounded'>
+                                        <select {...field} className='p-2 border border-gray-300 bg-inherit'>
                                             <option value=''>Sélectionner une note</option>
                                             {[1, 2, 3, 4, 5].map((rating) => (
                                                 <option key={rating} value={rating}>

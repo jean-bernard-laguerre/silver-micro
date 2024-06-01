@@ -19,20 +19,21 @@ const AdminRestaurants = () => {
     }, [])
 
     return (
-        <div className='flex-1 w-full p-3'>
+        <div className='flex-1 w-full p-3 container'>
             <h1>Mes Restaurants</h1>
-            <div className='flex flex-col'>
+            <div className='flex flex-col w-full'>
                 {positions.map((position) => (
-                    <div key={position.id}
-                        className='flex flex-col border border-gray-300 p-4 rounded-lg shadow-lg cursor-pointer'
-                        onClick={() => window.location.href = `/admin/restaurant/${position.Restaurant.id}`}
-                    >
-                        <p>{position.role}</p>
-                        <h2>{position.Restaurant.name}</h2>
-                        <p>{position.Restaurant.description}</p>
-                        {position.Restaurant.Avis && (
-                            <p>{position.Restaurant.Avis.averageRating}</p>
-                        )}
+                    <div className='flex border border-gray-300 shadow-lg my-2' key={position.id}>
+                        <img src={`https://source.unsplash.com/400x400/?${position.Restaurant.category}-nourriture`} alt='restaurant' className='w-36 h-36 object-cover' />
+                        <div key={position.id}
+                            className='flex flex-col w-full p-3 cursor-pointer'
+                            onClick={() => window.location.href = `/admin/restaurant/${position.Restaurant.id}`}
+                        >
+                            <p>{position.role}</p>
+                            <h2>{position.Restaurant.name}</h2>
+                            <p>{position.Restaurant.description}</p>
+                            <p>{position.Restaurant.Avis?.averageRating}</p>
+                        </div>
                     </div>
                 ))}
             </div>

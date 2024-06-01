@@ -86,17 +86,17 @@ const AdminRestaurant = () => {
                     <TabsTrigger value='Team'>Equipe</TabsTrigger>
                     <TabsTrigger value='Book'>Reservations</TabsTrigger>
                 </TabsList>
-                <TabsContent value='Info'>
+                <TabsContent className='container' value='Info'>
                     <RestaurantDashboard 
                         restaurant={restaurant}
+                        modal={modal}
                         avis={avis}
                     />
-                    <Button onClick={modal.open}>Modifier</Button>
                 </TabsContent>
-                <TabsContent value='Team'>
+                <TabsContent className='container' value='Team'>
                     <TeamTable team={team} />
                 </TabsContent>
-                <TabsContent value='Book'>
+                <TabsContent className='container' value='Book'>
                     <ReservationDashboard setDate={setDate} />
                 </TabsContent>
             </Tabs>

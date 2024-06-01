@@ -60,7 +60,7 @@ const ReservationEditForm = ({restaurantId, controls, reservation, update}) => {
         <div className='flex-1 w-full flex items-center justify-center'>
             <Form {...reservationForm}>
                 <form onSubmit={reservationForm.handleSubmit(onSubmit)}
-                    className='m-auto max-w-md w-full space-y-8 p-4 rounded-md'
+                    className='m-auto flex flex-col max-w-md w-full space-y-8 p-4 '
                 >
                     <FormField
                         name="date"
@@ -72,7 +72,7 @@ const ReservationEditForm = ({restaurantId, controls, reservation, update}) => {
                                 <FormControl>
                                     <input {...field}
                                         type="date"
-                                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     />
                                 </FormControl>
                                 <FormMessage fieldState={fieldState} />
@@ -89,7 +89,7 @@ const ReservationEditForm = ({restaurantId, controls, reservation, update}) => {
                                 <FormControl>
                                     <select
                                         {...field}
-                                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     >
                                         <option value="">
                                             Choisissez une heure
@@ -121,7 +121,7 @@ const ReservationEditForm = ({restaurantId, controls, reservation, update}) => {
                                         min="1"
                                         max="10"
                                         type="number"
-                                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     />
                                 </FormControl>
                                 <FormMessage fieldState={fieldState} />

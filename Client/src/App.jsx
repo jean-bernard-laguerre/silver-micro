@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthContext from './contexts/authContext'
 import './App.css'
+import './custom.css'
 
 
 import Home from './pages/home'

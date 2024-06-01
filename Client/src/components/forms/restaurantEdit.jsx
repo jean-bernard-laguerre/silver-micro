@@ -43,12 +43,14 @@ const RestaurantEdit = ({ restaurant, update }) => {
 
     return (
         <Form {...restaurantForm}>
-            <form onSubmit={restaurantForm.handleSubmit(onSubmit)}>
+            <form onSubmit={restaurantForm.handleSubmit(onSubmit)}
+                className='flex flex-col justify-end'
+            >
                 <FormField name="name" label="Name" render={({ field, fieldState }) => (
                     <FormItem>
                         <FormLabel htmlFor={field.name}>Name</FormLabel>
                         <FormControl>
-                            <input {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            <input {...field} className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                         </FormControl>
                         <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
@@ -57,16 +59,16 @@ const RestaurantEdit = ({ restaurant, update }) => {
                     <FormItem>
                         <FormLabel htmlFor={field.name}>Description</FormLabel>
                         <FormControl>
-                            <textarea {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            <textarea {...field} className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                         </FormControl>
                         <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                 )} />
                 <FormField name="address" label="Address" render={({ field, fieldState }) => (
                     <FormItem>
-                        <FormLabel htmlFor={field.name}>Address</FormLabel>
+                        <FormLabel htmlFor={field.name}>Addresse</FormLabel>
                         <FormControl>
-                            <input {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            <input {...field} className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                         </FormControl>
                         <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
@@ -75,16 +77,16 @@ const RestaurantEdit = ({ restaurant, update }) => {
                     <FormItem>
                         <FormLabel htmlFor={field.name}>Email</FormLabel>
                         <FormControl>
-                            <input {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            <input {...field} className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                         </FormControl>
                         <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                 )} />
                 <FormField name="capacity" label="Capacity" render={({ field, fieldState }) => (
                     <FormItem>
-                        <FormLabel htmlFor={field.name}>Capacity</FormLabel>
+                        <FormLabel htmlFor={field.name}>Capacité</FormLabel>
                         <FormControl>
-                            <input {...field} type="number" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            <input {...field} type="number" className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                         </FormControl>
                         <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
@@ -92,9 +94,9 @@ const RestaurantEdit = ({ restaurant, update }) => {
             
                 <FormField name="category" label="Category" render={({ field, fieldState }) => (
                     <FormItem>
-                        <FormLabel htmlFor={field.name}>Category</FormLabel>
+                        <FormLabel htmlFor={field.name}>Categorie</FormLabel>
                         <FormControl>
-                            <select {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <select {...field} className="block w-full px-3 py-2 border border-gray-300  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <option value="">Choose a category</option>
                                 {categories.map(category => (
                                     <option key={category} value={category}>{category}</option>
@@ -104,7 +106,11 @@ const RestaurantEdit = ({ restaurant, update }) => {
                         <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                 )} />
-                <Button type="submit">Enregistrer</Button>
+                <Button
+                    className="mt-4"
+                    type="submit">
+                    Enregistrer
+                </Button>
             </form>
         </Form>
     );

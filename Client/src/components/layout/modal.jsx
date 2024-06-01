@@ -7,7 +7,7 @@ const Modal = ({ controls, children }) => {
         <>
             {controls.isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="relative w-full max-w-md p-4 bg-white rounded-md shadow-md">
+                    <div className="relative w-full max-w-md p-4 bg-white shadow-md">
                         <button
                             className="absolute top-2 right-2"
                             onClick={controls.close}

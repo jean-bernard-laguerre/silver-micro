@@ -12,6 +12,9 @@ import Avis from '@/services/api/avis'
 import ReviewForm from '@/components/forms/reviewForm.jsx'
 import AuthContext from '@/contexts/authContext.jsx'
 
+import Comment from '@/components/ui/comment.jsx'
+import { Star, StarHalf, StarOff } from 'lucide-react'
+
 
 const Restaurant = () => {
 
@@ -70,22 +73,43 @@ const Restaurant = () => {
     
 
     return (
-        <div className="flex-1 flex flex-col w-full p-4">
-            <div className='flex-1 w-full'>
+        <div className="flex-1 flex flex-col w-full p-4 container mb-5">
+            <div className='flex-1 w-full my-3'>
                 {loadingRestaurant && (
                     <div>Loading...</div>
                 )}
                 {!!restaurant && (
-                    <div>
-                        <h1 className='text-3xl font-bold'>Nom: {restaurant.name}</h1>
-                        <p className='text-gray-500'>Description: {restaurant.description}</p>
-                        <p className='text-gray-500'>Adresse: {restaurant.address}</p>
-                        <p className='text-gray-500'>Email : {restaurant.email}</p>
-                        <p className='text-gray-500'>Capacity: {restaurant.capacity}</p>
-                        <p className='text-gray-500'>Rating: {restaurant.averageRating}</p>
+                    <div className='relative h-96 mb-8 overflow-hidden flex'>
+                        <img src={`https://source.unsplash.com/1600x800/?food-${restaurant.category}`} alt='restaurant' className='h-full w-full object-cover absolute' />
+                        <div className='z-30 bg-black/75 text-white p-5 leading-10'>
+                            <h1 className='text-3xl font-bold mb-2'>Nom: {restaurant.name}</h1>
+                            <p>Catégorie: {restaurant.category}</p>
+                            <p>Description: {restaurant.description}</p>
+                            <p>Adresse: {restaurant.address}</p>
+                            <p>Email : {restaurant.email}</p>
+                            <p>Capacité: {restaurant.capacity}</p>
+                            <p className='flex items-center'>
+                                <span>Note: {parseFloat(restaurant.averageRating).toFixed(1)}&nbsp;</span>
+                                <span className='flex'>{
+                                    Array.from({ length: 5 }, (_, i) => (
+                                        <span key={i}>
+                                            {i < Math.floor(restaurant.averageRating) ? 
+                                                <Star size={16} className='text-yellow-500' fill='gold' />
+                                                : 
+                                                i < Math.ceil(restaurant.averageRating) ?
+                                                    <StarHalf size={16} className='text-yellow-500' fill='gold' />
+                                                    :
+                                                    <StarOff size={16} className='text-gray-300' />}
+                                        </span>
+                                    ))    
+                                }</span>
+                                <span>&nbsp;({restaurant.nbAvis} avis)</span>
+                            </p>
+                        </div>
                         <Button
+                            className='absolute bottom-4 right-4 bg-black/75 text-white'
                             onClick={modal.open}
-                            variant='primary'
+                            variant='ghost'
                         >
                             Réserver
                         </Button>
@@ -93,25 +117,23 @@ const Restaurant = () => {
                 )}
             </div>
             <div className='flex-1 w-full'>
+                <h2 className='text-2xl font-bold'>
+                    Laissez votre avis
+                </h2>
                 {loadingAvis && (
                     <div>Loading...</div>
                 )}
-                {/* 
-                    Form to add a review
-                */}
                 <ReviewForm restaurantId={id} update={fetchAvis} reviewed={reviewed} commentId={userCommentId} />
+                <h2 className='text-2xl font-bold'>
+                    Commentaires
+                </h2>
                 {!!avis && (
-                    <div>
-                        <h2 className='text-2xl font-bold'>Avis</h2>
+                    <div className='border shadow-sm'>
                         {avis.map((avi) => (
-                            <div key={avi.id}>
-                                <p><span className='
-                                    font-bold
-                                    text-blue-500
-                                '>{avi.User.username}</span>: {new Date(avi.createdAt).toLocaleDateString()}</p>
-                                <p>{avi.review}</p>
-                                <p>{avi.rating}</p>
-                            </div>
+                            <span key={avi.id}>
+                                <Comment comment={avi}/>
+                                <hr />
+                            </span>
                         ))}
                     </div>
                 )}

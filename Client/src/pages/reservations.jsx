@@ -8,6 +8,9 @@ import ReservationEditForm from '@/components/forms/reservationEditForm'
 import ReservationAPI from '@/services/api/reservations'
 import { Button } from '@/components/ui/button'
 
+import { Pencil, Trash } from 'lucide-react'
+import ReservationCard from '@/components/reservationCard'
+
 const Reservations = () => {
 
     const controls = useModal()
@@ -39,22 +42,19 @@ const Reservations = () => {
     }
 
     return (
-        <div>
-            <h1 className='text-3xl font-bold'>Mes réservations</h1>
+        <div className='flex-1 container'>
+            <h1 className='text-3xl font-bold my-2'>Mes réservations</h1>
             <div className='flex flex-col'>
                 {reservations.length === 0 && (
                     <p>Vous n'avez pas de réservations</p>
                 )}
                 {reservations.map((reservation) => (
-                    <div key={reservation.id} className='flex flex-col'>
-                        <h2 className='text-2xl font-bold'>Restaurant: {reservation?.Restaurant.name}</h2>
-                        <p className='text-gray-500'>Date: {reservation?.date} à {reservation?.time}</p>
-                        <p className='text-gray-500'>Nombre de personnes: {reservation?.people}</p>
-                        <div className='flex space-x-2'>
-                            <Button onClick={() => editReservation(reservation)}>Modifier</Button>
-                            <Button onClick={() => deleteReservation(reservation)}>Supprimer</Button>
-                        </div>
-                    </div>
+                    <ReservationCard 
+                        key={reservation.id} 
+                        reservation={reservation} 
+                        editReservation={editReservation}
+                        deleteReservation={deleteReservation}    
+                    />
                 ))}
             </div>
             <Modal

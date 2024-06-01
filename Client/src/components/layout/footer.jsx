@@ -1,11 +1,12 @@
+import { Utensils } from 'lucide-react'
 import React from 'react'
 
 const Footer = () => {
     return (
-        <footer class="flex flex-wrap justify-between items-center w-full px-10 py-5 bg-black text-white">
-            <div id="Logo" class="flex flex-col w-16 h-16">
+        <footer className="flex flex-wrap justify-between items-center w-full px-10 py-5 bg-theme2 text-white">
+            <div id="Logo" className="flex flex-col w-16 h-16">
                 <a href="/">
-                    <img src="https://www.marseille.fr/sites/default/files/blason-ville-de-marseille_0.png" alt="logo"/>
+                    <Utensils size={32} className='w-8 h-8 text-white' />
                 </a>
                 <span>SilverMicro</span>
             </div>
