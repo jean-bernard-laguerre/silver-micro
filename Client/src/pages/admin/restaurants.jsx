@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import Responsables from '@/services/api/responsables'
 import AuthContext from '@/contexts/authContext'
 
+import { Star, StarHalf, StarOff } from 'lucide-react'
+
 const AdminRestaurants = () => {
 
     const { currentUser } = useContext(AuthContext)
@@ -29,10 +31,30 @@ const AdminRestaurants = () => {
                             className='flex flex-col w-full p-3 cursor-pointer'
                             onClick={() => window.location.href = `/admin/restaurant/${position.Restaurant.id}`}
                         >
-                            <p>{position.role}</p>
-                            <h2>{position.Restaurant.name}</h2>
-                            <p>{position.Restaurant.description}</p>
-                            <p>{position.Restaurant.Avis?.averageRating}</p>
+                            
+                            <h2 className='font-bold text-xl'>{position.Restaurant.name}</h2>
+                            <p><span className='font-semibold'>Rang: </span>{position.role}</p>
+                            <p><span className='font-semibold'>Adresse: </span>{position.Restaurant.address}</p>
+                            <p><span className='font-semibold'>Description: </span>{position.Restaurant.description}</p>
+                            <p className='text-gray-500 flex items-center'>
+                                <span className='font-semibold'>Note: &nbsp;</span>
+                                <span className='mr-2'>{
+                                    position.Restaurant.Avis[0]?.averageRating ? parseFloat(position.Restaurant.Avis[0]?.averageRating).toFixed(1) : ""
+                                }</span>
+                                {Array.from({ length: 5 }, (_, i) => (
+                                    <span key={i}>
+                                        {i < position.Restaurant.Avis[0]?.averageRating ? 
+                                            <>{
+                                                i + 1 === Math.ceil(position.Restaurant.Avis[0]?.averageRating) && position.Restaurant.Avis[0]?.averageRating % 1 !== 0 ?
+                                                    <StarHalf size={16} className='text-yellow-500' fill='gold' />
+                                                    : 
+                                                    <Star size={16} className='text-yellow-500' fill='gold' />
+                                            }</>
+                                            : 
+                                            <StarOff size={16} className='text-gray-300' />}
+                                    </span>
+                                ))
+                            }</p>
                         </div>
                     </div>
                 ))}

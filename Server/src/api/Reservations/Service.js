@@ -21,7 +21,7 @@ const getReservation = (req, res) => {
     Reservation.findByPk(req.params.id, {
         include: [{
             model: Restaurant,
-            attributes: ['name', 'address']
+            attributes: ['name', 'address', 'category']
         }],
         group: ['Restaurant.id'],
     }).then(reservation => {
@@ -42,7 +42,7 @@ const getReservationsByUser = (req, res) => {
         where: { userId: req.params.userId },
         include: [{
             model: Restaurant,
-            attributes: ['name', 'address']
+            attributes: ['name', 'address', 'category']
         }],
         group: [],
     }).then(reservations => {
