@@ -49,7 +49,7 @@ const RegisterRestaurant = () => {
         <div className='flex-1 w-full flex items-center justify-center'>
             <Form {...registerForm}>
                 <form onSubmit={registerForm.handleSubmit(onSubmit)}
-                    className='m-auto max-w-4xl w-full space-y-8 p-4 bg-theme3 shadow-md'
+                    className='m-auto max-w-4xl w-full space-y-4 p-4 bg-theme3 shadow-md'
                 >
                     <FormField name="name" label="Name" render={({ field, fieldState }) => (
                         <FormItem>

@@ -81,7 +81,10 @@ const authentication = (req, res) => {
                             id: user.id,
                             role: user.role,
                             username: user.username,
-                            email: user.email},
+                            email: user.email,
+                            createdAt: user.createdAt,
+                            updatedAt: user.updatedAt
+                        },
                         token: auth.generateToken(user)
                     });
             return true;

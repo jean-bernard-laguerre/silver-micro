@@ -39,13 +39,22 @@ const Profile = () => {
     }
 
     return (
-        <div className='flex-1 flex w-full p-3 justify-center items-center'>
-
-            <div className='w-96 relative border m-auto p-5' id='profile'>
+        <div className='flex-1 flex-col flex w-full justify-center items-center'>
+            <h1 className='text-4xl font-semibold text-left mb-10'>
+                Details du compte
+            </h1>
+            <div className='w-96 h-96 leading-loose relative border shadow-md p-5 bg-theme3' id='profile'>
                 <div className='w-full'>
-                    <p className='text-lg'>Username: {profile.currentUser?.username}</p>
-                    <p className='text-lg'>Email: {profile.currentUser?.email}</p>
+                    <p className='text-lg'><span className='font-semibold'>Nom:</span> {profile.currentUser?.username}</p>
+                    <p className='text-lg'><span className='font-semibold'>Email:</span> {profile.currentUser?.email}</p>
+                    <p className='text-lg'><span className='font-semibold'>Role:</span> {profile.currentUser?.role}</p>
+                    <p className='text-lg'><span className='font-semibold'>Inscrit le:</span> {new Date(profile.currentUser?.createdAt).toLocaleDateString()}</p>
+                    <p className='text-lg'><span className='font-semibold'>Dernière connexion:</span> {new Date().toLocaleDateString()}</p>
                 </div>
+                <div id='folded-corner'
+                    className='absolute top-0 right-0 w-0 h-0 border-t-8 border-r-8 border-theme3 bg-theme3
+                    '
+                ></div>
                 <Button variant='ghost'
                     className='absolute bottom-0 right-0'
                     onClick={controls.open}>

@@ -60,7 +60,7 @@ const ReservationEditForm = ({restaurantId, controls, reservation, update}) => {
         <div className='flex-1 w-full flex items-center justify-center'>
             <Form {...reservationForm}>
                 <form onSubmit={reservationForm.handleSubmit(onSubmit)}
-                    className='m-auto flex flex-col max-w-md w-full space-y-8 p-4 '
+                    className='m-auto flex flex-col max-w-md w-full space-y-4 p-4 '
                 >
                     <FormField
                         name="date"

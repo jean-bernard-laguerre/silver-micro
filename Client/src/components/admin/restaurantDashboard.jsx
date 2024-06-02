@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Star, StarHalf, StarOff } from 'lucide-react'
 import Comment from '@/components/ui/comment'
 
-const RestaurantDashboard = ({ restaurant, avis, modal }) => {
+const RestaurantDashboard = ({ deleteRestaurant, restaurant, avis, modal }) => {
     return (
         <>
             <div className='flex-1 w-full my-3'>
@@ -35,6 +35,13 @@ const RestaurantDashboard = ({ restaurant, avis, modal }) => {
                                 <span>&nbsp;({restaurant.nbAvis} avis)</span>
                             </p>
                         </div>
+                        <Button
+                            className='absolute top-4 right-4 bg-black/75 z-40 text-white'
+                            onClick={deleteRestaurant}
+                            variant='destructive'
+                        >
+                            Supprimer
+                        </Button>
                         <Button
                             className='absolute bottom-4 right-4 bg-black/75 z-40 text-white'
                             onClick={modal.open}

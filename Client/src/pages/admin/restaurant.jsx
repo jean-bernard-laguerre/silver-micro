@@ -81,8 +81,23 @@ const AdminRestaurant = () => {
     }, [id])
 
     const deleteTeamMember = (id) => {
+        if (!window.confirm('Voulez-vous vraiment supprimer ce membre de l\'équipe?')) return
         Responsables.delete(id).then(() => {
             setTeam(team.filter((member) => member.id !== id))
+        })
+    }
+
+    const deleteReservation = (id) => {
+        if (!window.confirm('Voulez-vous vraiment supprimer cette réservation?')) return
+        Reservations.delete(id).then(() => {
+            setReservations(reservations.filter((reservation) => reservation.id !== id))
+        })
+    }
+
+    const deleteRestaurant = () => {
+        if (!window.confirm('Voulez-vous vraiment supprimer ce restaurant?')) return
+        Restaurants.delete(id).then(() => {
+            window.location.href = '/admin/restaurants'
         })
     }
 
@@ -99,6 +114,7 @@ const AdminRestaurant = () => {
                 </TabsList>
                 <TabsContent className='container' value='Info'>
                     <RestaurantDashboard 
+                        deleteRestaurant={deleteRestaurant}
                         restaurant={restaurant}
                         modal={modal}
                         avis={avis}
@@ -113,6 +129,7 @@ const AdminRestaurant = () => {
                         setDate={setDate}
                         reservations={reservations}
                         availability={availability}
+                        deleteReservation={deleteReservation}
                     />
                 </TabsContent>
             </Tabs>

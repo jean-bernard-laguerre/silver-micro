@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '../ui/table.jsx'
+import { Button } from '../ui/button.jsx'
+import { Trash } from 'lucide-react'
 
-const ReservationDashboard = ({date, setDate, reservations, availability}) => {
+const ReservationDashboard = ({date, setDate, reservations, availability, deleteReservation}) => {
 
     const [daysReservations, setDaysReservations] = useState([])
     const [loading, setLoading] = useState(true)
@@ -55,6 +57,14 @@ const ReservationDashboard = ({date, setDate, reservations, availability}) => {
                                     }</TableCell>}
                                     <TableCell>{reservation.time}</TableCell>
                                     <TableCell>{reservation.people}</TableCell>
+                                    <TableCell>
+                                        <Button onClick={() => deleteReservation(reservation)}
+                                            variant='destructive'
+                                            className='bg-transparent text-black hover:text-white'
+                                        >
+                                            <Trash  size={20} strokeWidth={1} />
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

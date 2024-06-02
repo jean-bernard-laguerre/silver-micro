@@ -20,10 +20,10 @@ const AdminRestaurants = () => {
 
     return (
         <div className='flex-1 w-full p-3 container'>
-            <h1>Mes Restaurants</h1>
+            <h1 className='text-3xl font-bold my-2'>Mes Restaurants</h1>
             <div className='flex flex-col w-full'>
                 {positions.map((position) => (
-                    <div className='flex border border-gray-300 shadow-lg my-2' key={position.id}>
+                    <div className='flex border border-gray-300 shadow-sm my-2' key={position.id}>
                         <img src={`https://source.unsplash.com/400x400/?${position.Restaurant.category}-nourriture`} alt='restaurant' className='w-36 h-36 object-cover' />
                         <div key={position.id}
                             className='flex flex-col w-full p-3 cursor-pointer'
