@@ -16,6 +16,7 @@ What things you need to install the software and how to install them:
 
 ## Backend
 
+![alt text](image-1.png)
 A step by step series of examples that tell you how to get a development environment running:
 
 1. Navigate to the frontend directory: `cd Server`.
