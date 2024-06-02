@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Restaurants from '@/services/api/restaurants'
 import { useParams } from 'react-router-dom'
-import { categories } from '@/services/variables'
+import RestaurantCard from '@/components/restaurantCard'
+import RestaurantsSidemenu from '@/components/restaurantsSidemenu'
+
+
 
 const RestaurantsList = () => {
 
@@ -26,44 +29,19 @@ const RestaurantsList = () => {
     }, [search, filterCategory])
 
     return (
-        <div className='flex-1 flex flex-col w-full'>
-            <div className='flex flex-row space-x-4'>
-                <input type='text' placeholder='Rechercher un restaurant' 
-                    className='p-2 border border-gray-300 rounded'
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}
-                    className='p-2 border border-gray-300 rounded'
-                >
-                    <option value=''>Toutes les catégories</option>
-                    {categories.map((category) => (
-                        <option key={category} value={category}>{category}</option>
-                    ))}
-                </select>
-            </div>
+        <div className='flex-1 flex w-full flex-col md:flex-row'>
+            <RestaurantsSidemenu 
+                search={search} 
+                setSearch={setSearch}
+                filterCategory={filterCategory} 
+                setFilterCategory={setFilterCategory} />
             {loading && (
                 <div>Loading...</div>
             )} 
             {!!restaurants && (
-                <div className='flex flex-row flex-wrap'>
+                <div className='flex flex-1 flex-row flex-wrap justify-center'>
                     {restaurants.map((restaurant) => (
-                        <div key={restaurant.id} className='w-1/3 p-4'>
-                            <div className='bg-white shadow-lg rounded-lg'>
-                                <div className='p-4'>
-                                    <h2 className='font-bold text-xl'>{restaurant.name}</h2>
-                                    <p className='text-gray-500'>{restaurant.description}</p>
-                                    <p className='text-gray-500'>{restaurant.averageRating} ({restaurant.nbAvis} Avis)</p>
-                                    <div className='mt-4'>
-                                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                                            onClick={() => window.location.href = `/restaurant/${restaurant.id}`}
-                                        >
-                                            Voir le restaurant
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <RestaurantCard key={restaurant.id} restaurant={restaurant} />
                     ))}
                 </div>
             )}

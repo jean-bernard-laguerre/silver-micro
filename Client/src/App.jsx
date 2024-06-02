@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthContext from './contexts/authContext'
 import './App.css'
+import './custom.css'
 
 
 import Home from './pages/home'
@@ -15,6 +16,7 @@ import Profile from './pages/profile'
 import AdminRestaurants from './pages/admin/restaurants'
 import AdminRestaurant from './pages/admin/restaurant';
 import Header from './components/layout/header';
+import Footer from './components/layout/footer';
 
 const routes = [
   { path: '/', element: <Home/> },
@@ -69,7 +71,8 @@ function App() {
       <Header/>
       <RouterProvider 
         router={router}
-      />        
+      />
+      <Footer/>        
     </AuthContext.Provider>
   )
 }

@@ -37,7 +37,7 @@ const RegisterRestaurant = () => {
     const onSubmit = (data) => {
         Restaurants.create(data)
         .then(response => {
-            if (!response.success) {
+            if (!response.restaurant) {
                 setErrorMessage(response.error)
             } else {
                 window.location.href = '/admin'
@@ -49,13 +49,13 @@ const RegisterRestaurant = () => {
         <div className='flex-1 w-full flex items-center justify-center'>
             <Form {...registerForm}>
                 <form onSubmit={registerForm.handleSubmit(onSubmit)}
-                    className='m-auto max-w-md w-full space-y-8 p-4 bg-white shadow-md rounded-md'
+                    className='m-auto max-w-4xl w-full space-y-4 p-4 bg-theme3 shadow-md'
                 >
                     <FormField name="name" label="Name" render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel htmlFor={field.name}>Nom</FormLabel>
                             <FormControl>
-                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </FormControl>
                             <FormMessage>{fieldState.error?.message}</FormMessage>
                         </FormItem>
@@ -64,7 +64,7 @@ const RegisterRestaurant = () => {
                         <FormItem>
                             <FormLabel htmlFor={field.name}>Description</FormLabel>
                             <FormControl>
-                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </FormControl>
                             <FormMessage>{fieldState.error?.message}</FormMessage>
                         </FormItem>
@@ -73,7 +73,7 @@ const RegisterRestaurant = () => {
                         <FormItem>
                             <FormLabel htmlFor={field.name}>Addresse</FormLabel>
                             <FormControl>
-                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </FormControl>
                             <FormMessage>{fieldState.error?.message}</FormMessage>
                         </FormItem>
@@ -82,7 +82,7 @@ const RegisterRestaurant = () => {
                         <FormItem>
                             <FormLabel htmlFor={field.name}>Email</FormLabel>
                             <FormControl>
-                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <input {...field} className="block w-full px-3 py-2 border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </FormControl>
                             <FormMessage>{fieldState.error?.message}</FormMessage>
                         </FormItem>
@@ -91,7 +91,7 @@ const RegisterRestaurant = () => {
                         <FormItem>
                             <FormLabel htmlFor={field.name}>Capacité</FormLabel>
                             <FormControl>
-                                <input {...field} type="number" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <input {...field} type="number" className="block w-full px-3 py-2 border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </FormControl>
                             <FormMessage>{fieldState.error?.message}</FormMessage>
                         </FormItem>
@@ -100,7 +100,7 @@ const RegisterRestaurant = () => {
                         <FormItem>
                             <FormLabel htmlFor={field.name}>Catégorie</FormLabel>
                             <FormControl>
-                                <select {...field} className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <select {...field} className="block w-full px-3 py-2 border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     <option value="">Choisissez une catégorie</option>
                                     {categories.map(category => (
                                         <option key={category} value={category}>{category}</option>

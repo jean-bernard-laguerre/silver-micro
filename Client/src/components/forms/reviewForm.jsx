@@ -10,6 +10,8 @@ import z from 'zod'
 import Avis from '@/services/api/avis'
 import AuthContext from '@/contexts/authContext'
 
+import { Star, StarOff } from 'lucide-react'
+
 const formSchema = z.object({
     rating: z.coerce.number().min(1, 'Please select a rating').max(5, 'Please select a rating between 1 and 5'),
     review: z.string().min(1, 'Please enter a comment').optional()
@@ -50,7 +52,9 @@ const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
         <>
             { profile.currentUser ? (
                 <Form {...reviewForm}>
-                    <form onSubmit={reviewForm.handleSubmit(onSubmit)}>
+                    <form 
+                        className='flex flex-col space-y-4 p-3 mt-2 mb-5 border border-gray-300 bg-theme3 shadow-md'
+                        onSubmit={reviewForm.handleSubmit(onSubmit)}>
                         <FormField 
                             name='rating'
                             label='Note'
@@ -58,12 +62,15 @@ const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
                                 <FormItem>
                                     <FormLabel>Note</FormLabel>
                                     <FormControl>
-                                        <select {...field} className='p-2 border border-gray-300 rounded'>
-                                            <option value='1'>1</option>
-                                            <option value='2'>2</option>
-                                            <option value='3'>3</option>
-                                            <option value='4'>4</option>
-                                            <option value='5'>5</option>
+                                        <select {...field} className='p-2 border border-gray-300 bg-inherit'>
+                                            <option value=''>Sélectionner une note</option>
+                                            {[1, 2, 3, 4, 5].map((rating) => (
+                                                <option key={rating} value={rating}>
+                                                    {rating}
+                                                    {rating <= field.value ? <Star className='w-6 h-6 text-yellow-500' /> : <StarOff className='w-6 h-6 text-gray-300' />}
+                                                </option>
+                                            ))    
+                                            }
                                         </select>
                                     </FormControl>
                                     <FormMessage>{reviewForm.formState.errors.rating?.message}</FormMessage>
@@ -74,7 +81,9 @@ const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
                             name='review'
                             label='Commentaire'
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem
+                                    className='flex flex-col'
+                                >
                                     <FormLabel>Commentaire</FormLabel>
                                     <FormControl>
                                         <textarea {...field} className='p-2 border border-gray-300 rounded' />
@@ -83,7 +92,9 @@ const ReviewForm = ({ restaurantId, update, reviewed, commentId }) => {
                                 </FormItem>
                             )}
                         />
-                        <Button type='submit'>
+                        <Button type='submit'
+                            className='w-fit self-end'
+                        >
                             {reviewed ? 'Modifier' : 'Ajouter'}
                         </Button>
                     </form>
