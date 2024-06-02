@@ -69,3 +69,34 @@ Before running the frontend, you need to configure the API endpoint. Open the `s
 
 To start the development server, run the following command:
 npm run dev
+
+## Frontend Built With
+
+- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
+- [Axios](https://axios-http.com/) - Promise based HTTP client for the browser and node.js
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [Shadcn](https://ui.shadcn.com/) - A component library using tailwind
+
+### Prerequisites
+
+Before getting started, make sure you have the following installed:
+
+- Node.js
+- npm or yarn
+
+### Installation
+
+Follow these steps to set up the development environment:
+
+1. Clone the repository.
+2. Navigate to the frontend directory: `cd Client`.
+3. Install dependencies: `npm install` or `yarn install`.
+
+### Configuration
+
+Before running the frontend, you need to configure the API endpoint. Open the `services/config.js` file in the root directory of the frontend and set the `baseURL` variable to the URL of your backend API.
+
+### Development
+
+To start the development server, run the following command:
+npm run dev
