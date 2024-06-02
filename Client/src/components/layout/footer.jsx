@@ -3,7 +3,7 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <footer className="flex flex-wrap justify-between items-center w-full px-10 py-5 bg-theme2 text-white">
+        <footer className="flex flex-wrap justify-between items-center w-full px-10 py-10 bg-theme2 text-white">
             <div id="Logo" className="flex flex-col w-16 h-16">
                 <a href="/">
                     <Utensils size={32} className='w-8 h-8 text-white' />

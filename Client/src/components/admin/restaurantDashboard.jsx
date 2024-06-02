@@ -36,7 +36,7 @@ const RestaurantDashboard = ({ restaurant, avis, modal }) => {
                             </p>
                         </div>
                         <Button
-                            className='absolute bottom-4 right-4 bg-black/75 text-white'
+                            className='absolute bottom-4 right-4 bg-black/75 z-40 text-white'
                             onClick={modal.open}
                             variant='ghost'
                         >

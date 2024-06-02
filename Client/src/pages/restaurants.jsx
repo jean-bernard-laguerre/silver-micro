@@ -29,7 +29,7 @@ const RestaurantsList = () => {
     }, [search, filterCategory])
 
     return (
-        <div className='flex-1 flex w-full sm:flex-col md:flex-row'>
+        <div className='flex-1 flex w-full flex-col md:flex-row'>
             <RestaurantsSidemenu 
                 search={search} 
                 setSearch={setSearch}

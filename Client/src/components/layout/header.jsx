@@ -26,7 +26,7 @@ const Header = () => {
             <div className='flex justify-between w-full items-center'>
                 <div className="flex items-center h-full py-1.5">
                         { currentUser && <>
-                            <span className="text-sm">Bonjour, {currentUser.username}</span>
+                            <span className="text-md font-semibold">Bienvenue, {currentUser.username}</span>
                         </>}
                 </div>
                 <div className="flex items-center h-full overflow-x-auto">

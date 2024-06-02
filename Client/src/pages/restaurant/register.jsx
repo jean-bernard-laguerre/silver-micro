@@ -37,7 +37,7 @@ const RegisterRestaurant = () => {
     const onSubmit = (data) => {
         Restaurants.create(data)
         .then(response => {
-            if (!response.success) {
+            if (!response.restaurant) {
                 setErrorMessage(response.error)
             } else {
                 window.location.href = '/admin'

@@ -44,9 +44,17 @@ const AdminRestaurant = () => {
             setLoadingRestaurant(false)
         })
     }
+    
+    const getReservations = () => {
+        Reservations.getByRestaurant(id).then((response) => {
+            setReservations(response.reservations)
+            setLoadingReservations(false)
+        })
+    }
 
     useEffect(() => {
         getRestaurant()
+        getReservations()
     }, [id])
 
     useEffect(() => {
@@ -57,9 +65,12 @@ const AdminRestaurant = () => {
     }, [id])
 
     useEffect(() => {
-        date && Reservations.getAvailability(id, date).then((response) => {
-            setAvailability(response.availability)
-        })
+        if (date) {
+            Reservations.getAvailability(id, date).then((response) => {
+                setAvailability(response.availability)
+            })
+        }
+
     }, [date, id])
 
     useEffect(() => {
@@ -97,7 +108,12 @@ const AdminRestaurant = () => {
                     <TeamTable team={team} />
                 </TabsContent>
                 <TabsContent className='container' value='Book'>
-                    <ReservationDashboard setDate={setDate} />
+                    <ReservationDashboard
+                        date={date} 
+                        setDate={setDate}
+                        reservations={reservations}
+                        availability={availability}
+                    />
                 </TabsContent>
             </Tabs>
             <Modal
